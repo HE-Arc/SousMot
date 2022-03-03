@@ -24,5 +24,9 @@ jobs:
         run: |
           ssh-keyscan -p ${{ secrets.DEPLOY_HOST_SSH_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       - name: Deploy
+        env:
+          SOUSMOT_HOST: ${{ secret.SOUSMOT_HOST }}
+          SOUSMOT_USER: ${{ secrets.SOUSMOT_USER }}
+          SOUSMOT_PORT: ${{ secrets.SOUSMOT_PORT }}
         run: |
           bundle exec cap production deploy
