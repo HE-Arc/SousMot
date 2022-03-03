@@ -1,0 +1,22 @@
+name: Deploy to our prod !
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install SSH Key
+        uses: webfactory/ssh-agent@0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
