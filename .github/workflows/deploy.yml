@@ -20,3 +20,7 @@ jobs:
         uses: webfactory/ssh-agent@0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Add known host
+          ssh-keyscan -p ${{ secrets.DEPLOY_HOST_SSH_PORT }} ${{ secrets.DEPLOY_ }}
+      - name: Deploy
+          bundle exec cap production deploy
