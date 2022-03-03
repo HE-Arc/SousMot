@@ -1,4 +1,4 @@
-# Sousmot
+# SousMot
 
 Wordle-like game in multiplayer developped in django.
 
