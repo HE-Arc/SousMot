@@ -2,7 +2,7 @@
 
 Wordle-like game in multiplayer developped in django.
 
-Link : [SousMot](https://motus.srvz-webapp.he-arc.ch/)
+Website : [SousMot](https://motus.srvz-webapp.he-arc.ch/)
 
 ## Requirements
 
@@ -31,3 +31,9 @@ python3 manage.py runserver
 ```
 6. ???
 7. Profit !
+
+### Continuous Deployment
+
+This project use [Capistrano](https://capistranorb.com/) for continuous deployment.
+
+Every commit on `master` publish it on the production server via GitHub Action
