@@ -2,6 +2,8 @@
 
 Wordle-like game in multiplayer developped in django.
 
+Link : [SousMot](https://motus.srvz-webapp.he-arc.ch/)
+
 ## Requirements
 
 Python 3.6+ (See [Django doc](https://docs.djangoproject.com/en/3.2/releases/3.2/#python-compatibility) for more infos)
