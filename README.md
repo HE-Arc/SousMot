@@ -6,7 +6,7 @@ Website : [SousMot](https://motus.srvz-webapp.he-arc.ch/)
 
 ## Requirements
 
-Python 3.6+ (See [Django doc](https://docs.djangoproject.com/en/3.2/releases/3.2/#python-compatibility) for more infos)
+Python 3.8+ (See [Django doc](https://docs.djangoproject.com/en/4.0/releases/4.0/#python-compatibility) for more infos)
 
 All the other requirements are in the `requirements.txt` file.
 
