@@ -20,3 +20,33 @@ $navbar-background-color:#212121;
 //$navbar-item-color:#FBFBFF;
 
 @import "bulma/bulma.sass";
+
+.box {
+    text-align:left;
+    max-width: 30vw;
+    margin: 0 auto;
+    margin-top:3rem;
+
+    label, input {
+        color:#212121;
+    }
+
+    .button {
+        width:100%;
+    }
+}
+
+footer.footer {
+    text-align: center;
+    padding:3rem 1.5rem 4rem;
+}
+
+body {
+    display:flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+section {
+    flex:1;
+}
