@@ -1,0 +1,24 @@
+{% load static %}
+{% load compress %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %} - SousMot</title>
+{% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "scss/main.scss" %}" />
+{% endcompress %}
+</head>
+<body>
+    <nav>
+
+    </nav>
+    {% block content %}
+
+    {%  endblock %}
+    <footer class="footer">
+        <strong>SousMots</strong> by Corentin Faivre, Massimo Ferro and Alexia Montavon. Copyright He-Arc Ingénierie 2022
+    </footer>
+</body>
