@@ -1,18 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SousMot</title>
-{% load static %}
-{% load compress %}
-{% compress css %}
-    <link rel="stylesheet" type="text/x-scss" href="{% static "scss/main.scss" %}" />
-{% endcompress %}
-</head>
-<body>
-    <p>TEST</p>
-</body>
-</html>
+{% extends "sousmotapp/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h1 class="title">SousMots</h1>
+        <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+        <!-- CREATE GAME FORM -->
+        <form>
+
+        </form>
+    </section>
+<p>YOLO</p>
+{% endblock %}
