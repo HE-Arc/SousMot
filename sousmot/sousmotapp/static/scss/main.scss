@@ -1,1 +1,22 @@
+
+// Color variable for the game grid
+$game-cell-color:#3E92CC;
+$game-cell-right-color:#D72638;
+$game-cell-almost-color:#FFB400;
+
+// Bulma override
+$body-background-color:#2F2F2F;
+$footer-background-color:#212121;
+
+$text:#FBFBFF;
+$text-strong:$text;
+
+$crimson: $game-cell-right-color;
+$crimson-invert: findColorInvert($crimson);
+$custom-colors: ("crimson": ($crimson, $crimson-invert));
+
+//$footer-color:#FBFBFF;
+$navbar-background-color:#212121;
+//$navbar-item-color:#FBFBFF;
+
 @import "bulma/bulma.sass";
