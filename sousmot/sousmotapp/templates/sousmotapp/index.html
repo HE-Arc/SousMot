@@ -3,13 +3,21 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <h1 class="title">SousMots</h1>
-        <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
-        <!-- CREATE GAME FORM -->
-        <form>
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">SousMot</h1>
+            <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+            <!-- CREATE GAME FORM -->
+            <div class="box">
+                <div class="field">
+                    <label class="label"></label>
+                    <div class="control">
+                        <input class="input" type="email" placeholder="">
+                    </div>
+                </div>
 
-        </form>
+                <button class="button is-primary">Create Room</button>
+            </div>
+        </div>
     </section>
-<p>YOLO</p>
 {% endblock %}
