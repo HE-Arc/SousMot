@@ -24,6 +24,11 @@ $navbar-background-color:#212121;
 
 @import "bulma/bulma.sass";
 
+.button.is-text:hover {
+    color: $body-background-color;
+}
+
+
 .box {
     text-align:left;
     max-width: 30vw;
