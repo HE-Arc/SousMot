@@ -18,8 +18,16 @@ $crimson: $game-cell-right-color;
 $crimson-invert: findColorInvert($crimson);
 $custom-colors: ("crimson": ($crimson, $crimson-invert));
 
-//$footer-color:#FBFBFF;
+// Navbar
 $navbar-background-color:#212121;
+$navbar-item-hover-background-color: rgba(100,100,100,0.3);
+$navbar-item-active-background-color: $navbar-item-hover-background-color;
+
+$navbar-item-hover-color: $crimson;
+$navbar-item-active-color: $navbar-item-hover-color;
+
+//$footer-color:#FBFBFF;
+
 //$navbar-item-color:#FBFBFF;
 
 @import "bulma/bulma.sass";
