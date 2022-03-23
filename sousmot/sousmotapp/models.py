@@ -50,7 +50,7 @@ class Game(models.Model):
     def __str__(self):
         return "Nombre de lettres : " + self.nb_letters
 
-class Games_per_users(models.Model):
+class GamesPerUsers(models.Model):
     
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
@@ -59,10 +59,10 @@ class Games_per_users(models.Model):
     
     class Meta:
         unique_together = (("user", "game"),)
-        verbose_name_plural = "Games_per_users"
+        verbose_name_plural = "GamesPerUsers"
         
 
-class History_solo(models.Model):
+class HistorySolo(models.Model):
     
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
@@ -71,3 +71,4 @@ class History_solo(models.Model):
     
     class Meta:
         unique_together = (("user", "game"),)
+        verbose_name_plural = "HystorySolo"
