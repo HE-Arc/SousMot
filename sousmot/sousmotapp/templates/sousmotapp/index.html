@@ -18,10 +18,24 @@
                 </div>
 
                 <!-- Mode -->
-                <div class="field">
-                    <label for="" class="label">Mode</label>
+                <div class="field gamemode">
+                    <label for="gamemode" class="label">Mode</label>
                     <div class="control">
-
+                        <div class="buttons has-addons has-addons-fullwidth">
+                            <div class="button is-fullwidth is-large  is-crimson is-selected" data-gamemode="time-attack">
+                                <span class="icon">
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                                <span>Time attack</span>
+                            </div>
+                            <div class="button is-large is-fullwidth" data-gamemode="rounds">
+                                <span class="icon">
+                                    <i class="fa fa-users"></i>
+                                </span>
+                                <span>Rounds</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="gamemode-input">
                     </div>
                 </div>
 
@@ -53,4 +67,5 @@
             </div>
         </div>
     </section>
+    <script src="{% static "js/app.js" %}"></script>
 {% endblock %}
