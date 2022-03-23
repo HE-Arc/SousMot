@@ -61,7 +61,7 @@ class Games_per_users(models.Model):
         unique_together = (("user", "game"),)
         
 
-class History_sole(models.Model):
+class History_solo(models.Model):
     
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
