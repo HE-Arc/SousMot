@@ -7,14 +7,14 @@ class User (models.Model):
     
     username = models.CharField(max_length=50)
     email = models.EmailField()
-    password = models.CharField()
+    password = models.CharField(max_length=100)
     
     def __str__(self):
         return self.username
     
 class Dictionary(models.Model):
     
-    name = models.CharField()
+    name = models.CharField(max_length=100)
     
     class Meta:
         verbose_name_plural = "Dictionaries"
@@ -26,14 +26,14 @@ class Word (models.Model):
     
     dictionary = models.ForeignKey('Dictionary', on_delete=models.CASCADE)
     
-    word = models.CharField()
+    word = models.CharField(max_length=20)
     
     def __str__(self):
         return self.word
 
 class Mode(models.Model):
     
-    name = models.CharField()
+    name = models.CharField(max_length=50)
     
     def __str__(self):
         return self.name
@@ -59,6 +59,7 @@ class Games_per_users(models.Model):
     
     class Meta:
         unique_together = (("user", "game"),)
+        verbose_name_plural = "Games_per_users"
         
 
 class History_solo(models.Model):
