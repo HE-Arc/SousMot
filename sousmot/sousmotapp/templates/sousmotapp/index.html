@@ -27,10 +27,11 @@
 
                 <!-- Word Length -->
                 <div class="field">
-                    <label for="" class="label">Word Length</label>
+                    <label for="word-length" class="label">Word Length</label>
                     <div class="control">
-
+                        <input id="word-length" class="slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').value = value">
                     </div>
+                    <input id="word-length-value" class="input" disabled type="text">
                 </div>
 
                 <!-- Dictionary dropdown -->
