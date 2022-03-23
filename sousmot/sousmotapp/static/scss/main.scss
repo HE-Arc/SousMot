@@ -31,7 +31,9 @@ $navbar-item-active-color: $navbar-item-hover-color;
 
 //$navbar-item-color:#FBFBFF;
 
+@import "bulma-slider/index.sass";
 @import "bulma/bulma.sass";
+
 
 .button.is-text:hover {
     color: $body-background-color;
@@ -48,7 +50,7 @@ $navbar-item-active-color: $navbar-item-hover-color;
         color:#212121;
     }
 
-    .button {
+    .validation-button {
         width:100%;
     }
 }
@@ -66,4 +68,8 @@ body {
 
 section {
     flex:1;
+}
+
+.has-addons-fullwidth .button.is-fullwidth {
+    width:50%;
 }
