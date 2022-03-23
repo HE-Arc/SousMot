@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sousmotapp.user')),
             ],
             options={
-                'verbose_name_plural': 'HystorySolo',
+                'verbose_name_plural': 'HistorySolo',
                 'unique_together': {('user', 'game')},
             },
         ),
