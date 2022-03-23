@@ -71,4 +71,4 @@ class HistorySolo(models.Model):
     
     class Meta:
         unique_together = (("user", "game"),)
-        verbose_name_plural = "HystorySolo"
+        verbose_name_plural = "HistorySolo"
