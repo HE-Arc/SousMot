@@ -4,6 +4,10 @@ from django.urls import reverse_lazy
 from django.views import generic
 # Create your views here.
 
+def index(request):
+    context = {}
+    return render(request, 'sousmotapp/index.html', context)
+
 
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
