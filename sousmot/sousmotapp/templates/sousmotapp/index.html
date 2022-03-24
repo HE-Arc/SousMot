@@ -44,9 +44,9 @@
                 <div class="field">
                     <label for="word-length" class="label">Word Length</label>
                     <div class="control">
-                        <input id="word-length" class="slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').value = value">
+                        <input id="word-length" class="has-output slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').textContent = value">
+                        <output for="sliderWithValue" id="word-length-value" class="has-background-dark">x</output>
                     </div>
-                    <input id="word-length-value" class="input" disabled type="text">
                 </div>
 
                 <!-- Dictionary dropdown -->

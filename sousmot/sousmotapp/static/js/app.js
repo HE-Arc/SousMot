@@ -1,4 +1,5 @@
 
+document.getElementById('word-length-value').textContent = document.getElementById("word-length").value;
 
 // Create Game form : Toggle mode button
 let gamemodeList = [];
