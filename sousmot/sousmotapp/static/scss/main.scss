@@ -1,1 +1,75 @@
+@import "bulma/sass/utilities/functions";
+
+// Color variable for the game grid
+$game-cell-color:#3E92CC;
+$game-cell-right-color:#D72638;
+$game-cell-almost-color:#FFB400;
+
+// --- Bulma override ---
+$body-background-color:#2F2F2F;
+$footer-background-color:#212121;
+
+$text:#FBFBFF;
+$input-color: hsl(0, 0%, 21%);
+$button-color: hsl(0, 0%, 21%);
+$text-strong:$text;
+
+// Custom colors
+$crimson: $game-cell-right-color;
+$crimson-invert: findColorInvert($crimson);
+$custom-colors: ("crimson": ($crimson, $crimson-invert));
+
+// Navbar
+$navbar-background-color:#212121;
+$navbar-item-hover-background-color: rgba(100,100,100,0.3);
+$navbar-item-active-background-color: $navbar-item-hover-background-color;
+
+$navbar-item-hover-color: $crimson;
+$navbar-item-active-color: $navbar-item-hover-color;
+
+//$footer-color:#FBFBFF;
+
+//$navbar-item-color:#FBFBFF;
+
+@import "bulma-slider/index.sass";
 @import "bulma/bulma.sass";
+
+
+.button.is-text:hover {
+    color: $body-background-color;
+}
+
+
+.box {
+    text-align:left;
+    max-width: 30vw;
+    margin: 0 auto;
+    margin-top:3rem;
+
+    label, input {
+        color:#212121;
+    }
+
+    .validation-button {
+        width:100%;
+    }
+}
+
+footer.footer {
+    text-align: center;
+    padding:3rem 1.5rem 4rem;
+}
+
+body {
+    display:flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+section {
+    flex:1;
+}
+
+.has-addons-fullwidth .button.is-fullwidth {
+    width:50%;
+}

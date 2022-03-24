@@ -1,0 +1,71 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">SousMot</h1>
+            <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+            <!-- CREATE GAME FORM -->
+            <div class="box">
+                <!-- Name -->
+                <div class="field">
+                    <label for="" class="label">Name</label>
+                    <div class="control">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+
+                <!-- Mode -->
+                <div class="field gamemode">
+                    <label for="gamemode" class="label">Mode</label>
+                    <div class="control">
+                        <div class="buttons has-addons has-addons-fullwidth">
+                            <div class="button is-fullwidth is-large  is-crimson is-selected" data-gamemode="time-attack">
+                                <span class="icon">
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                                <span>Time attack</span>
+                            </div>
+                            <div class="button is-large is-fullwidth" data-gamemode="rounds">
+                                <span class="icon">
+                                    <i class="fa fa-users"></i>
+                                </span>
+                                <span>Rounds</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="gamemode-input">
+                    </div>
+                </div>
+
+                <!-- Word Length -->
+                <div class="field">
+                    <label for="word-length" class="label">Word Length</label>
+                    <div class="control">
+                        <input id="word-length" class="slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').value = value">
+                    </div>
+                    <input id="word-length-value" class="input" disabled type="text">
+                </div>
+
+                <!-- Dictionary dropdown -->
+                <div class="field">
+                    <label for="dictionary-choice" class="label">Dictionary</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="dictionary-choice">
+                                <!-- TODO: Retrieve available Dictionary ! (Don't forget the ones created by the user) -->
+                                <option>English</option>
+                                <option>French</option>
+                                <option>Spanish</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button class="button validation-button is-crimson">Create Room</button>
+            </div>
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}
