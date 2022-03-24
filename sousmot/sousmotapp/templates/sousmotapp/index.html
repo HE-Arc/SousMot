@@ -9,14 +9,20 @@
             <h1 class="title">SousMot</h1>
             <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
             <!-- CREATE GAME FORM -->
-            <div class="box">
-                <!-- Name -->
+            <!-- TODO: CHANGE ACTION URL ! -->
+            <form class="box" method="POST" action="#TODO-url">
+                {% csrf_token %}
+
+                <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
+                <!-- Username -->
                 <div class="field">
-                    <label for="" class="label">Name</label>
+                    <label for="guest-username" class="label">Username</label>
                     <div class="control">
-                        <input type="text" class="input">
+                        <input required id="guest-username" name="guest-username" type="text" class="input">
                     </div>
                 </div>
+
+                <hr>
 
                 <!-- Mode -->
                 <div class="field gamemode">
@@ -63,8 +69,8 @@
                         </div>
                     </div>
                 </div>
-                <button class="button validation-button is-crimson">Create Room</button>
-            </div>
+                <input type="submit" class="button validation-button is-crimson" value="Create Room">
+            </form>
         </div>
     </section>
     <script src="{% static "js/app.js" %}"></script>
