@@ -15,23 +15,20 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Environment variable
+# Setting up environment file
 env = environ.Env(
     SOUSMOT_DEBUG_MODE=(bool, False)
 )
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Settings setted in the .env (located alongside the manage.py)
+
 SECRET_KEY = env('SOUSMOT_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('SOUSMOT_DEBUG_MODE')
 
 ALLOWED_HOSTS = env.list('SOUSMOT_ALLOWED_HOSTS')
-
 
 # Application definition
 
