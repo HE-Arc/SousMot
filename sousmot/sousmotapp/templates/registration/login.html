@@ -1,12 +1,33 @@
-{% extends 'base.html' %}
+{% extends "sousmotapp/base.html" %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Log In</h1>
+            <p class="subtitle">Welcome back, happy to see you again !</p>
+
+            <div class="box">
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Username -->
+                    <div class="field">
+                        <label for="" class="label">Username</label>
+                        <div class="control">
+                            <input id="id_username" type="text" class="input" name="username">
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="field">
+                        <label for="" class="label">Password</label>
+                        <div class="control">
+                            <input id="id_password" type="password" class="input" name="password">
+                        </div>
+                    </div>
+                    <button type="submit" class="button validation-button is-crimson">Log In</button>
+                </form>
+            </div>
+        </div>
+    </section>
 {% endblock %}
