@@ -18,5 +18,4 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', include('sousmotapp.urls')),
-    path('admin/', admin.site.urls),
 ]
