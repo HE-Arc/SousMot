@@ -39,10 +39,10 @@ $navbar-item-active-color: $navbar-item-hover-color;
     color: $body-background-color;
 }
 
-
 .box {
     text-align:left;
     max-width: 30vw;
+
     margin: 0 auto;
     margin-top:3rem;
 
@@ -52,6 +52,19 @@ $navbar-item-active-color: $navbar-item-hover-color;
 
     .validation-button {
         width:100%;
+    }
+
+    // Responsive mixins
+    @include desktop-only {
+        max-width: 50vw;
+    }
+
+    @include tablet-only {
+        max-width: 70vw;
+    }
+
+    @include mobile {
+      max-width: 80vw;
     }
 }
 
