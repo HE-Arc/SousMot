@@ -16,14 +16,14 @@
                     <div class="field">
                         <label for="id_username" class="label">Username</label>
                         <div class="control">
-                            <input id="id_username" type="text" name="username" class="input">
+                            <input id="id_username" type="text" name="username" class="input" required>
                         </div>
                     </div>
                     <!-- Password 1 -->
                     <div class="field">
                         <label for="id_password1" class="label">Password</label>
                         <div class="control">
-                            <input id="id_password1" type="password" name="password1" class="input">
+                            <input id="id_password1" type="password" name="password1" class="input" required>
                         </div>
                     </div>
                     <!-- Password 2 -->
@@ -31,7 +31,7 @@
                         <label for="id_password2" class="label">Confirm Password</label>
                         <div class="control">
                             <input id="id_password2" type="password" name="password2" class="input"
-                                   oninput="matchPassword()">
+                                   oninput="matchPassword()" required>
                         </div>
                     </div>
                     <div class="notification is-info is-light">
