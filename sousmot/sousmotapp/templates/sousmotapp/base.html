@@ -1,0 +1,66 @@
+{% load static %}
+{% load compress %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %} - SousMot</title>
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static "scss/main.scss" %}"/>
+    {% endcompress %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <strong>SousMot</strong>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
+                </a>
+
+                {% if request.path != "/" %}
+                <a class="navbar-item">
+                    Create Game
+                </a>
+                {% endif %}
+
+                <a class="navbar-item">
+                    Rules
+                </a>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-crimson is-outlined">
+                        <strong>Sign up</strong>
+                    </a>
+                    <a class="button is-light is-outlined">
+                        Log in
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% block content %}
+
+{% endblock %}
+<footer class="footer">
+    <strong>SousMot</strong> by Corentin Faivre, Massimo Ferro and Alexia Montavon. Copyright He-Arc Ingénierie 2022
+</footer>
+</body>
