@@ -25,12 +25,20 @@ source .venv/bin/activate
 ```
 pip3 install -r requirements.txt
 ```
-5. Run the server
+5. Copy the `.env` file ! (It's in the `sousmot` folder)
+```
+cp sousmot/.env.example sousmot/.env
+```
+6. Generate a secret key to put into the `.env` file (`SOUSMOT_SECRET_KEY`)
+```
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+7. Run the server
 ```
 python3 manage.py runserver
 ```
-6. ???
-7. Profit !
+8. ???
+9. Profit !
 
 ### Continuous Deployment
 
