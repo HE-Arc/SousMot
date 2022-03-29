@@ -34,15 +34,6 @@
                                    oninput="matchPassword()" required>
                         </div>
                     </div>
-                    <div class="notification is-info is-light">
-                        <ul>
-                            <li>Your password can’t be too similar to your other personal information.</li>
-                            <li>Your password must contain at least 8 characters.</li>
-                            <li>Your password can’t be a commonly used password.</li>
-                            <li>Your password can’t be entirely numeric.</li>
-                        </ul>
-                    </div>
-
                     {% if form.errors %}
                         <div class="notification is-danger is-light">
                             {% for field in form %}
