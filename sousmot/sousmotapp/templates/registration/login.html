@@ -25,6 +25,15 @@
                             <input id="id_password" type="password" class="input" name="password" required>
                         </div>
                     </div>
+                    <!-- Errors -->
+                    {% if form.errors %}
+                        <div class="notification is-danger is-light">
+                            {% for error in form.non_field_errors %}
+                                <ul class="errors">{{ error|escape }}</ul>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     <button type="submit" class="button validation-button is-crimson">Log In</button>
                 </form>
             </div>
