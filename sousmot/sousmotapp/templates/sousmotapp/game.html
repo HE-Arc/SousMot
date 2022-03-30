@@ -1,0 +1,14 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">SousMot</h1>
+            <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}
