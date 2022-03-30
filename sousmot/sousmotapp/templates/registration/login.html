@@ -1,0 +1,42 @@
+{% extends "sousmotapp/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Log In</h1>
+            <p class="subtitle">Welcome back, happy to see you again !</p>
+
+            <div class="box">
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Username -->
+                    <div class="field">
+                        <label for="id_username" class="label">Username</label>
+                        <div class="control">
+                            <input id="id_username" type="text" class="input" name="username" required>
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="field">
+                        <label for="id_password" class="label">Password</label>
+                        <div class="control">
+                            <input id="id_password" type="password" class="input" name="password" required>
+                        </div>
+                    </div>
+                    <!-- Errors -->
+                    {% if form.errors %}
+                        <div class="notification is-danger is-light">
+                            {% for error in form.non_field_errors %}
+                                <ul class="errors">{{ error|escape }}</ul>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="button validation-button is-crimson">Log In</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

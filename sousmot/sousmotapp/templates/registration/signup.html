@@ -1,0 +1,64 @@
+{% extends "sousmotapp/base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Sign Up</h1>
+            <p class="subtitle">Nice to meet you, join-us !</p>
+
+            <div class="box">
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Username -->
+                    <div class="field">
+                        <label for="id_username" class="label">Username</label>
+                        <div class="control">
+                            <input id="id_username" type="text" name="username" class="input" required>
+                        </div>
+                    </div>
+                    <!-- Password 1 -->
+                    <div class="field">
+                        <label for="id_password1" class="label">Password</label>
+                        <div class="control">
+                            <input id="id_password1" type="password" name="password1" class="input" minlength="8" required>
+                        </div>
+                    </div>
+                    <!-- Password 2 -->
+                    <div class="field">
+                        <label for="id_password2" class="label">Confirm Password</label>
+                        <div class="control">
+                            <input id="id_password2" type="password" name="password2" class="input" minlength="8"
+                                   oninput="matchPassword()" required>
+                        </div>
+                    </div>
+                    {% if form.errors %}
+                        <div class="notification is-danger is-light">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <ul class="errors">{{ error|escape }}</ul>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="button validation-button is-crimson">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function matchPassword() {
+            var pw1 = document.getElementById("id_password1");
+            var pw2 = document.getElementById("id_password2");
+            if (pw1.value !== pw2.value) {
+                pw2.classList.add("is-danger")
+            } else {
+                pw2.classList.remove("is-danger")
+            }
+        }
+    </script>
+{% endblock %}
