@@ -11,10 +11,16 @@ def index(request):
     return render(request, 'sousmotapp/index.html', context)
 
 
-class GameView(generic.CreateView):
-    model = Game
-    fields = ['mode','nb_letters' ,'time_s', 'nb_words']
+class GameView(generic.TemplateView):
     template_name = 'sousmotapp/game.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['mode'] = " TIME ATTACK"
+        context['rows'] = range(6)
+        context['word_length'] = range(5)
+        return context
+
 
 
 class SignUpView(generic.CreateView):
