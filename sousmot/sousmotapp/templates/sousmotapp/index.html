@@ -14,6 +14,7 @@
                 {% csrf_token %}
 
                 <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
+                {% if isguest is False %}
                 <!-- Username -->
                 <div class="field">
                     <label for="guest-username" class="label">Username</label>
@@ -21,8 +22,8 @@
                         <input required id="guest-username" name="guest-username" type="text" class="input">
                     </div>
                 </div>
-
                 <hr>
+                {% endif %}
 
                 <!-- Mode -->
                 <div class="field gamemode">
