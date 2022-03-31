@@ -45,3 +45,9 @@ python3 manage.py runserver
 This project use [Capistrano](https://capistranorb.com/) for continuous deployment.
 
 Every commit on `master` publish it on the production server via GitHub Action
+
+### Load words
+
+In file `link.txt`, you found a link to download words.json. It's a file with all french words. 
+
+To load data in your app, use command : `python manage.py loaddata words.json`
