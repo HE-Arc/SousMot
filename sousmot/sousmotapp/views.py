@@ -18,7 +18,9 @@ class GameView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['mode'] = " TIME ATTACK"
         context['rows'] = range(6)
+        context['word_first_letter'] = "P"
         context['word_length'] = range(5)
+        context['word_length_js'] = 5
         return context
 
 

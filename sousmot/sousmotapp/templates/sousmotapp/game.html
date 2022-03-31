@@ -10,13 +10,13 @@
             <p class="subtitle">A Multiplayer Customizable Wordle game - {{ mode }} !</p>
             <div class="columns is-centered">
                 <div class="column is-narrow">
-                    <table class="table is-bordered">
+                    <table class="table is-bordered" id="table">
                         {% for i in rows %}
                             <tr>
                                 {% for j in word_length %}
                                     <td>
                                         <div>
-                                            {{ forloop.counter }}
+
                                         </div>
                                     </td>
                                 {% endfor %}
@@ -33,11 +33,16 @@
             color: black;
             font-size: 2rem;
         }
+
         .table td div {
             width: 50px;
             height: 50px;
             overflow: hidden;
         }
     </style>
-    <script src="{% static "js/app.js" %}"></script>
+    <script>
+        var wordLength = {{ word_length_js }};
+        var wordFirstLetter = '{{ word_first_letter }}';
+    </script>
+    <script src="{% static "js/game.js" %}"></script>
 {% endblock %}
