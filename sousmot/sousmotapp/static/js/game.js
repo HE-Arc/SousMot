@@ -25,7 +25,19 @@ function addLetterToWord(letter) {
             userPosition--;
             writeWord()
         }
+    } else if (letter == "ENTER") {
+        if (userPosition > 0) {
+            userTry++;
+            userPosition=1;
+            verifyWord()
+            writeWord();
+        }
     }
+}
+
+function verifyWord() {
+    console.log("Verify word : " + word); // Replace by function to verify word
+    word = "P.R.." // Known letters
 }
 
 function writeWord() {
@@ -33,7 +45,7 @@ function writeWord() {
     let rows = myTable.rows;
     let inputRow = rows[userTry];
     for (let i = 0; i < wordLength; i++) {
-        inputRow.cells[i].innerText = word[i];
+        inputRow.cells[i].children[0].innerText = word[i];
     }
 }
 
