@@ -1,8 +1,11 @@
+import datetime
+import time
 from .models import Game
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
+
 
 # Create your views here.
 
@@ -16,13 +19,15 @@ class GameView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['mode'] = " TIME ATTACK"
+
+        context['mode'] = "TIME ATTACK"
+        end_time = time.time() + 610
+        context['end_time'] = end_time
         context['rows'] = range(6)
         context['word_first_letter'] = "P"
         context['word_length'] = range(5)
         context['word_length_js'] = 5
         return context
-
 
 
 class SignUpView(generic.CreateView):
@@ -34,4 +39,3 @@ class SignUpView(generic.CreateView):
         if self.request.user.is_authenticated:
             return redirect('/')
         return super().dispatch(*args, **kwargs)
-

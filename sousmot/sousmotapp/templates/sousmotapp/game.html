@@ -7,7 +7,9 @@
     <section class="hero has-text-centered">
         <div class="hero-body">
             <h1 class="title">SousMot</h1>
-            <p class="subtitle">A Multiplayer Customizable Wordle game - {{ mode }} !</p>
+            <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+            <p class="subtitle"> {{ mode }}</p>
+            <p id="timer" class="subtitle"></p>
             <div class="columns is-centered">
                 <div class="column is-narrow">
                     <table class="table is-bordered" id="table">
@@ -39,10 +41,16 @@
             height: 50px;
             overflow: hidden;
         }
+
+        #timer {
+            height: 2rem;
+        }
     </style>
     <script>
         let wordLength = {{ word_length_js }};
         let wordFirstLetter = '{{ word_first_letter }}';
+
+        let end_time = {{ end_time }};
     </script>
     <script src="{% static "js/game.js" %}"></script>
 {% endblock %}
