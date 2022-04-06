@@ -10,7 +10,7 @@
             <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
             <!-- CREATE GAME FORM -->
             <!-- TODO: CHANGE ACTION URL ! -->
-            <form class="box" method="POST" action="#TODO-url">
+            <form class="box" method="POST" action="{% url 'game_create' %}">
                 {% csrf_token %}
 
                 <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
