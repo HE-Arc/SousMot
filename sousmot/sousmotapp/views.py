@@ -21,12 +21,17 @@ class GameView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['mode'] = "TIME ATTACK"
-        end_time = time.time() + 610
-        context['end_time'] = end_time
         context['rows'] = range(6)
-        context['word_first_letter'] = "P"
-        context['word_length'] = range(5)
-        context['word_length_js'] = 5
+
+        end_time = time.time() + 610  # TODO replace by game duration
+        context['end_time'] = end_time
+
+        word_length = 5  # TODO replace by word length
+        context['word_length'] = range(word_length)
+        context['word_length_js'] = word_length
+
+        context['word_first_letter'] = "P"  # TODO replace by first letter of word
+
         return context
 
 

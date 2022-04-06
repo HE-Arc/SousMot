@@ -7,6 +7,7 @@ document.addEventListener('keydown', (event) => {
     let letter = event.key;
     addLetterToWord(letter);
 
+    // Uncomment this to display the code value
     //var code = event.code;
     //alert(`Key pressed ${letter} \r\n Key code value: ${code}`);
 }, false);
@@ -17,27 +18,29 @@ function addLetterToWord(letter) {
         if (userPosition < wordLength) {
             word = word.replaceAt(userPosition, letter);
             userPosition++;
-            writeWord()
+            writeWord();
         }
-    } else if (letter == "BACKSPACE") {
+    } else if (letter === "BACKSPACE") {
         if (userPosition > 0) {
             word = word.replaceAt(userPosition - 1, '.')
             userPosition--;
-            writeWord()
+            writeWord();
         }
-    } else if (letter == "ENTER") {
-        if (userPosition > 0) {
+    } else if (letter === "ENTER") {
+        // Send only if word is full
+        if (word.match(/\./g) == null) {
             userTry++;
             userPosition = 1;
-            verifyWord()
+            verifyWord();
             writeWord();
         }
     }
 }
 
 function verifyWord() {
-    console.log("Verify word : " + word); // Replace by function to verify word
+    console.log("Verify word : " + word); // TODO replace by function to send word to server
 
+    // TODO get response from server
     let response = [
         {"letter": "P", "type": "good_place"},
         {"letter": "O", "type": "wrong"},
@@ -46,15 +49,17 @@ function verifyWord() {
         {"letter": "E", "type": "good_place"}
     ]
 
+    // Clean cached word
     word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
+
     let myTable = document.getElementById('table');
     let rows = myTable.rows;
-    let resultRow = rows[userTry-1];
+    let resultRow = rows[userTry - 1];
     for (let i = 0; i < response.length; i++) {
-        if (response[i]["type"] === "good_place"){
-            word = word.replaceAt(i,response[i]["letter"]);
+        if (response[i]["type"] === "good_place") {
+            word = word.replaceAt(i, response[i]["letter"]);
             resultRow.cells[i].classList.add("good_place");
-        } else if (response[i]["type"] === "bad_place"){
+        } else if (response[i]["type"] === "bad_place") {
             resultRow.cells[i].classList.add("bad_place");
         }
     }
@@ -71,16 +76,14 @@ function writeWord() {
 
 let countDownDate = new Date(end_time * 1000).getTime();
 let x = setInterval(function () {
-    // Get today's date and time
     let now = new Date().getTime();
-    // Find the distance between now and the count down date
     let distance = countDownDate - now;
 
-    // Time calculations for days, hours, minutes and seconds
+    // Time calculations for minutes and seconds
     let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    // Display the result in the element with id="demo"
+    // Display the result
     if (minutes >= 0 && seconds >= 0) {
         document.getElementById("timer").innerHTML = pad(minutes, 2) + ":" + pad(seconds, 2);
     }
@@ -91,9 +94,9 @@ String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-https://stackoverflow.com/questions/2998784/how-to-output-numbers-with-leading-zeros-in-javascript
-    function pad(num, size) {
-        num = num.toString();
-        while (num.length < size) num = "0" + num;
-        return num;
-    }
+//https://stackoverflow.com/questions/2998784/how-to-output-numbers-with-leading-zeros-in-javascript
+function pad(num, size) {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+}
