@@ -28,7 +28,7 @@ function addLetterToWord(letter) {
     } else if (letter == "ENTER") {
         if (userPosition > 0) {
             userTry++;
-            userPosition=1;
+            userPosition = 1;
             verifyWord()
             writeWord();
         }
@@ -37,7 +37,27 @@ function addLetterToWord(letter) {
 
 function verifyWord() {
     console.log("Verify word : " + word); // Replace by function to verify word
-    word = "P.R.." // Known letters
+
+    let response = [
+        {"letter": "P", "type": "good_place"},
+        {"letter": "O", "type": "wrong"},
+        {"letter": "R", "type": "bad_place"},
+        {"letter": "T", "type": "good_place"},
+        {"letter": "E", "type": "good_place"}
+    ]
+
+    word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
+    let myTable = document.getElementById('table');
+    let rows = myTable.rows;
+    let resultRow = rows[userTry-1];
+    for (let i = 0; i < response.length; i++) {
+        if (response[i]["type"] === "good_place"){
+            word = word.replaceAt(i,response[i]["letter"]);
+            resultRow.cells[i].classList.add("good_place");
+        } else if (response[i]["type"] === "bad_place"){
+            resultRow.cells[i].classList.add("bad_place");
+        }
+    }
 }
 
 function writeWord() {
