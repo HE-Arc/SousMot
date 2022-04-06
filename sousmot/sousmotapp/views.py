@@ -11,6 +11,11 @@ def index(request):
     return render(request, 'sousmotapp/index.html', context)
 
 
+def rules(request):
+    context = {}
+    return render(request, 'sousmotapp/rules.html', context)
+
+
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")

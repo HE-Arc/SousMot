@@ -1,0 +1,38 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Rules</h1>
+            <p class="subtitle">Because is always better to know what you're doing !</p>
+
+            <p>
+                SousMot is a multiplayer game based on Wordle, a game where you have to guess a word by successive <br>
+                attempts, as well as the TV game Motus, a game in which two teams competed in order to guess the <br>
+                most words possible.
+            </p>
+            <br>
+            <h2 class="subtitle">The Game</h2>
+            <p>
+                In the game view, try to find a word that is in the dictionary and fits in one row of the table. <br>
+                When you find it, click enter button and the letters that you have entered will color depending on the position <br>
+            </p>
+
+            <ul>
+                <li>Red : Letter to the right place</li>
+                <li>Yellow : Letter to the wrong place</li>
+                <li>None : Letter not contained in the word</li>
+            </ul>
+            <br>
+            <h2 class="subtitle">Time Attack</h2>
+            <p>
+                Each player has a set time to find as many words as possible. The player who finds the most words wins.
+            </p>
+
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}
