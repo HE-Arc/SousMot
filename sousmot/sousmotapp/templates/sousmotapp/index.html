@@ -13,7 +13,6 @@
             <form class="box" method="POST" action="#TODO-url">
                 {% csrf_token %}
 
-                <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
                 {% if isguest is False %}
                 <!-- Username -->
                 <div class="field">
