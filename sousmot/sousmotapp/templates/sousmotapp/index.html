@@ -13,23 +13,24 @@
             <form class="box" method="POST" action="#TODO-url">
                 {% csrf_token %}
 
-                <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
                 <!-- Username -->
-                <div class="field">
-                    <label for="guest-username" class="label">Username</label>
-                    <div class="control">
-                        <input required id="guest-username" name="guest-username" type="text" class="input">
+                {% if not user.is_authenticated %}
+                    <div class="field">
+                        <label for="guest-username" class="label">Username</label>
+                        <div class="control">
+                            <input required id="guest-username" name="guest-username" type="text" class="input">
+                        </div>
                     </div>
-                </div>
-
-                <hr>
+                    <hr>
+                {% endif %}
 
                 <!-- Mode -->
                 <div class="field gamemode">
                     <label for="gamemode" class="label">Mode</label>
                     <div class="control">
                         <div class="buttons has-addons has-addons-fullwidth">
-                            <div class="button is-fullwidth is-large  is-crimson is-selected" data-gamemode="time-attack">
+                            <div class="button is-fullwidth is-large  is-crimson is-selected"
+                                 data-gamemode="time-attack">
                                 <span class="icon">
                                     <i class="fa fa-clock-o"></i>
                                 </span>
@@ -50,7 +51,9 @@
                 <div class="field">
                     <label for="word-length" class="label">Word Length</label>
                     <div class="control">
-                        <input id="word-length" class="has-output slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').textContent = value">
+                        <input id="word-length" class="has-output slider is-crimson is-fullwidth" step="1" min="6"
+                               max="10" value="7" type="range"
+                               oninput="document.getElementById('word-length-value').textContent = value">
                         <output for="sliderWithValue" id="word-length-value" class="has-background-dark">x</output>
                     </div>
                 </div>
