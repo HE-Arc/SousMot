@@ -115,3 +115,18 @@ section {
 #timer {
     height: 2rem;
 }
+
+#keyboard button {
+    background-color: $navbar-background-color;
+    color: white;
+    font-size: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+}
+
+#keyboard div {
+    padding: 0.1rem;
+}

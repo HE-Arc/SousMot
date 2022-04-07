@@ -21,7 +21,7 @@ function addLetterToWord(letter) {
             writeWord();
         }
     } else if (letter === "BACKSPACE") {
-        if (userPosition > 0) {
+        if (userPosition > 1) {
             word = word.replaceAt(userPosition - 1, '.')
             userPosition--;
             writeWord();
@@ -56,11 +56,14 @@ function verifyWord() {
     let rows = myTable.rows;
     let resultRow = rows[userTry - 1];
     for (let i = 0; i < response.length; i++) {
+        let keyboardLetter = document.getElementById('kb' + response[i]["letter"]);
         if (response[i]["type"] === "good_place") {
             word = word.replaceAt(i, response[i]["letter"]);
             resultRow.cells[i].classList.add("good_place");
+            keyboardLetter.classList.add("good_place")
         } else if (response[i]["type"] === "bad_place") {
             resultRow.cells[i].classList.add("bad_place");
+            keyboardLetter.classList.add("bad_place")
         }
     }
 }

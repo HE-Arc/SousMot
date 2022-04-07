@@ -27,6 +27,32 @@
                     </table>
                 </div>
             </div>
+            <br>
+            <div class="columns is-centered is-multiline" id="keyboard">
+                <div class="column is-full">
+                    <div>
+                        {% for i in "QWERTZUIOP" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="column is-full">
+                    <div>
+                        {% for i in "ASDFGHJKL" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="column is-full">
+                    <div>
+                        {% for i in "YXCVBNM" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                        <button onclick="addLetterToWord('BACKSPACE')">&#9003;</button>
+                        <button onclick="addLetterToWord('ENTER')" style="width: 6rem">&#8629;</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <script>
