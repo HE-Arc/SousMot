@@ -48,7 +48,7 @@ class Game(models.Model):
     nb_words = models.PositiveSmallIntegerField()
     
     def __str__(self):
-        return "Nombre de lettres : " + self.nb_letters
+        return "Nombre de lettres : " + str(self.nb_letters)
 
 class GamesPerUser(models.Model):
     
