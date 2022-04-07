@@ -1,8 +1,13 @@
-let userTry = 0;
-let userPosition = 1;
-let word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
-writeWord();
+// Variables declaration
+let userTry = 0; // correspond to grid.x
+let userPosition = 1; // correspond to grid.y
+let word = wordFirstLetter.concat('.'.repeat(wordLength - 1)); // Shared word variable filled with dots and initial letter
+let countDownDate = new Date(end_time * 1000).getTime(); // Date to the end of countdown
+writeWord(); // Write word in grid for first time
 
+/**
+ * Listen to the keydown event user keyboard
+ */
 document.addEventListener('keydown', (event) => {
     let letter = event.key;
     addLetterToWord(letter);
@@ -12,31 +17,49 @@ document.addEventListener('keydown', (event) => {
     //alert(`Key pressed ${letter} \r\n Key code value: ${code}`);
 }, false);
 
+/**
+ * Add a given letter to the grid
+ * @param letter char to add to the grid
+ */
 function addLetterToWord(letter) {
+    // Every letter should be uppercase
     letter = letter.toUpperCase()
+
+    // Test if the received letter is accepted
     if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(letter)) {
+        // When the letter is a regular alphabet letter, set it at the right position in word
         if (userPosition < wordLength) {
             word = word.replaceAt(userPosition, letter);
+            // Once the letter is added we need to increment the user position in grid (grid column)
             userPosition++;
             writeWord();
         }
     } else if (letter === "BACKSPACE") {
+        // When user send backspace character we need to replace the last added character by '.'
+        // Pay attention : First letter is never erased !
         if (userPosition > 1) {
             word = word.replaceAt(userPosition - 1, '.')
+            // Once the letter is added we need to decrement the user position in grid (grid column)
             userPosition--;
             writeWord();
         }
     } else if (letter === "ENTER") {
-        // Send only if word is full
+        // When user send enter character we need to verify the word
+        // The letter is verified only when the word is full
         if (word.match(/\./g) == null) {
+            // Increment the number of user try (grid rows) and reset user position in grid (grid column)
             userTry++;
             userPosition = 1;
+
             verifyWord();
             writeWord();
         }
     }
 }
 
+/**
+ * Send the word to the server and wait a response to colorize the letters
+ */
 function verifyWord() {
     console.log("Verify word : " + word); // TODO replace by function to send word to server
 
@@ -52,32 +75,52 @@ function verifyWord() {
     // Clean cached word
     word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
 
+    // Get user previous row
     let myTable = document.getElementById('table');
     let rows = myTable.rows;
     let resultRow = rows[userTry - 1];
+
+    // For each letter in the response build word and colorize letters
     for (let i = 0; i < response.length; i++) {
+        // Get the corresponding keyboard letter
         let keyboardLetter = document.getElementById('kb' + response[i]["letter"]);
+
+        // Check if the letter is right or not
         if (response[i]["type"] === "good_place") {
+            // Build word for the next display
             word = word.replaceAt(i, response[i]["letter"]);
+
+            // Colorize cells and keyboard
             resultRow.cells[i].classList.add("good_place");
             keyboardLetter.classList.add("good_place")
         } else if (response[i]["type"] === "bad_place") {
+            // Colorize cells and keyboard
             resultRow.cells[i].classList.add("bad_place");
             keyboardLetter.classList.add("bad_place")
         }
     }
 }
 
+/**
+ * Write the word variable in the grid
+ */
 function writeWord() {
+    // Get user current row
     let myTable = document.getElementById('table');
     let rows = myTable.rows;
     let inputRow = rows[userTry];
+
+    // Write inside the grid letter by letter
     for (let i = 0; i < wordLength; i++) {
         inputRow.cells[i].children[0].innerText = word[i];
     }
 }
 
-let countDownDate = new Date(end_time * 1000).getTime();
+/**
+ * Display the countdown on the
+ * @type {number}
+ * @see https://www.w3schools.com/howto/howto_js_countdown.asp
+ */
 let x = setInterval(function () {
     let now = new Date().getTime();
     let distance = countDownDate - now;
@@ -92,12 +135,24 @@ let x = setInterval(function () {
     }
 }, 1000);
 
-// https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
+/**
+ * Replace a letter at a given index in a string
+ * @param index index of letter to replace
+ * @param replacement letter to replace with
+ * @returns {string}
+ * @see https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
+ */
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-//https://stackoverflow.com/questions/2998784/how-to-output-numbers-with-leading-zeros-in-javascript
+/**
+ * Write a number with a given number of 0 before if needed ex: 08, 09, 10, 11...
+ * @param num Number to write
+ * @param size Size to match
+ * @returns {string | string}
+ * @see //https://stackoverflow.com/questions/2998784/how-to-output-numbers-with-leading-zeros-in-javascript
+ */
 function pad(num, size) {
     num = num.toString();
     while (num.length < size) num = "0" + num;
