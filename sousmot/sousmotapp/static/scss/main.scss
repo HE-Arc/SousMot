@@ -45,7 +45,10 @@ $navbar-item-active-color: $navbar-item-hover-color;
 
     margin: 0 auto;
     margin-top:3rem;
-    color: $input-color;
+
+    &:not(.dark-box) {
+        color: $input-color;
+    }
 
     label, input {
         color:#212121;
@@ -86,4 +89,30 @@ section {
 
 .has-addons-fullwidth .button.is-fullwidth {
     width:50%;
+}
+
+// Rules pages
+
+.good-place-color {
+    color: $game-cell-right-color;
+}
+
+.wrong-place-color {
+    color: $game-cell-almost-color;
+}
+
+.hero-rules {
+
+    .box {
+        background-color : $navbar-background-color;
+    }
+
+    .content {
+        margin-left:auto;
+        margin-right: auto;
+
+        ul {
+            list-style-type: none;
+        }
+    }
 }
