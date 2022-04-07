@@ -13,7 +13,7 @@
             <form class="box" method="POST" action="#TODO-url">
                 {% csrf_token %}
 
-                {% if isguest is False %}
+                {% if not is_guest %}
                 <!-- Username -->
                 <div class="field">
                     <label for="guest-username" class="label">Username</label>

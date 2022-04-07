@@ -8,7 +8,7 @@ from django.views import generic
 
 def index(request):
     context = { 
-        'isguest' : request.user.is_authenticated,
+        'is_guest' : request.user.is_authenticated,
     }
     return render(request, 'sousmotapp/index.html', context)
 
