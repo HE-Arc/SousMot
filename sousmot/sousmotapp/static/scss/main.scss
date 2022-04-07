@@ -69,6 +69,10 @@ $navbar-item-active-color: $navbar-item-hover-color;
     }
 }
 
+.box strong {
+    color:hsl(0, 0%, 21%)
+}
+
 footer.footer {
     text-align: center;
     padding:3rem 1.5rem 4rem;
@@ -86,4 +90,8 @@ section {
 
 .has-addons-fullwidth .button.is-fullwidth {
     width:50%;
+}
+
+.media {
+    align-items: center;
 }

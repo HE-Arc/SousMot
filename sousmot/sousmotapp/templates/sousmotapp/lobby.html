@@ -1,0 +1,30 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Lobby - {{ slug }}{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Game Lobby - {{ slug }}</h1>
+            <div class="box">
+                {% for foo in "adwdadw" %}
+                <article class="media">
+                      <figure class="media-left">
+                        <p class="image is-48x48">
+                          <img src="{% static "img/128x128.png" %}">
+                        </p>
+                      </figure>
+                      <div class="media-content">
+                        <div class="content">
+                          <p><strong>John Smith</strong> <span class="tag is-link">Guest</span></p>
+                        </div>
+                      </div>
+                </article>
+                {% endfor %}
+            </div>
+            <div class="button is-large is-crimson">Start the Game</div>
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}

@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views import generic
-
+from django.utils.decorators import method_decorator
+from django.views import generic, View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
+from django.http import JsonResponse
+from .models import Game, Mode, Dictionary
 
 # Create your views here.
 
@@ -22,3 +26,9 @@ class SignUpView(generic.CreateView):
         if self.request.user.is_authenticated:
             return redirect('/')
         return super().dispatch(*args, **kwargs)
+
+
+
+class GameLobbyView(TemplateView):
+    template_name = "sousmotapp/lobby.html"
+
