@@ -6,7 +6,9 @@ from django.views import generic, View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from django.http import JsonResponse
-#from forms import GameCreationForm
+
+from .models import Game, Dictionary, Mode
+
 from .forms import GameCreationForm
 
 # Create your views here.
@@ -34,16 +36,18 @@ class CreateGameView(View):
     def post(self, request):
         form = GameCreationForm(request.POST)
 
-        form_status = ""
+        if not form.is_valid():
+            return redirect('index')
 
-        if form.is_valid():
-            form_status = "IS GOOD"
-        else:
-            form_status = "IS BAD"
+        # Create game in DB
+        game_obj = Game.objects.create(
+            dictionary_id=Dictionary.objects.get(name=form.data["dictionary"]).pk,
+            mode_id=Mode.objects.get(name=form.data["mode"]).pk
+        )
+        game_obj.save()
 
         return JsonResponse({
             'status_code': 200,
-            'error': form_status,
             'data' : form.data,
             'lol' : form.errors
         })
