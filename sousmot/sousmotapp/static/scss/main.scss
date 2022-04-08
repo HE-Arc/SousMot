@@ -91,7 +91,7 @@ section {
 // Game
 .table td {
     padding: 0.5rem;
-    color: white;
+    color: $text;
     font-size: 2rem;
     font-weight: bold;
     background-color: $navbar-background-color;
@@ -118,13 +118,16 @@ section {
 
 #keyboard button {
     background-color: $navbar-background-color;
-    color: white;
+    color: $text;
     font-size: 1.5rem;
     width: 3rem;
     height: 3rem;
     border-style: solid;
     border-width: 1px;
     border-radius: 6px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #keyboard div {
