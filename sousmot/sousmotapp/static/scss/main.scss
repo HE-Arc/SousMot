@@ -104,12 +104,12 @@ section {
     overflow: hidden;
 }
 
-.good_place {
-    background-color: $game-cell-right-color !important;
+table .good_place, #keyboard .good_place {
+    background-color: $game-cell-right-color;
 }
 
-.bad_place {
-    background-color: $game-cell-almost-color !important;
+table .bad_place, #keyboard .bad_place {
+    background-color: $game-cell-almost-color;
 }
 
 #timer {
@@ -128,6 +128,19 @@ section {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+}
+
+#keyboard button:hover {
+    background-color: $navbar-item-hover-background-color;
+    cursor: pointer;
+}
+
+#keyboard .good_place:hover {
+    background-color: adjust-color($game-cell-right-color, $lightness: 10);
+}
+
+#keyboard .bad_place:hover {
+    background-color: adjust-color($game-cell-almost-color, $lightness: 10);
 }
 
 #keyboard div {
