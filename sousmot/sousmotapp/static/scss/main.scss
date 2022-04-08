@@ -47,6 +47,10 @@ $navbar-item-active-color: $navbar-item-hover-color;
     margin-top: 3rem;
     color: $input-color;
 
+    &:not(.dark-box) {
+        color: $input-color;
+    }
+
     label, input {
         color: #212121;
     }
@@ -162,3 +166,28 @@ section {
 
 }
 
+// Rules pages
+
+.good-place-color {
+    color: $game-cell-right-color;
+}
+
+.wrong-place-color {
+    color: $game-cell-almost-color;
+}
+
+.hero-rules {
+
+    .box {
+        background-color : $navbar-background-color;
+    }
+
+    .content {
+        margin-left:auto;
+        margin-right: auto;
+
+        ul {
+            list-style-type: none;
+        }
+    }
+}

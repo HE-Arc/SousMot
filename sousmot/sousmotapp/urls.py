@@ -15,6 +15,7 @@ urlpatterns = [
          auth_views.LoginView.as_view(template_name='registration/login.html', redirect_authenticated_user=True),
          name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path('game/', GameView.as_view(), name='game')
+    path('game/', GameView.as_view(), name='game'),
+    path('rules/', views.rules, name='rules')
 ]
 

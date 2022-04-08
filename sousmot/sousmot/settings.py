@@ -77,13 +77,28 @@ WSGI_APPLICATION = 'sousmot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+SOUSMOT_DATABASE_TYPE = env('SOUSMOT_DATABASE_TYPE')
 
+if SOUSMOT_DATABASE_TYPE == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+elif SOUSMOT_DATABASE_TYPE == 'mysql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': env('SOUSMOT_DATABASE_NAME'),
+            'USER': env('SOUSMOT_DATABASE_USER'),
+            'PASSWORD': env('SOUSMOT_DATABASE_PASSWORD'),
+            'HOST': env('SOUSMOT_DATABASE_HOST'),
+            'PORT': env('SOUSMOT_DATABASE_PORT'),
+            'OPTIONS': {'ssl_mode': 'DISABLED'},
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

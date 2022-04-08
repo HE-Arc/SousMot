@@ -10,9 +10,15 @@ from django.views import generic
 # Create your views here.
 
 def index(request):
-    context = {}
+    context = { 
+        'is_guest' : request.user.is_authenticated,
+    }
     return render(request, 'sousmotapp/index.html', context)
 
+def rules(request):
+    context = {}
+    return render(request, 'sousmotapp/rules.html', context)
+  
 
 class GameView(generic.TemplateView):
     template_name = 'sousmotapp/game.html'
@@ -34,7 +40,7 @@ class GameView(generic.TemplateView):
 
         return context
 
-
+      
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")

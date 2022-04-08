@@ -13,7 +13,7 @@
             <form class="box" method="POST" action="#TODO-url">
                 {% csrf_token %}
 
-                <!-- TODO : FOR GUEST ONLY, OTHERWISE HIDE IT ! -->
+                {% if not is_guest %}
                 <!-- Username -->
                 <div class="field">
                     <label for="guest-username" class="label">Username</label>
@@ -21,8 +21,8 @@
                         <input required id="guest-username" name="guest-username" type="text" class="input">
                     </div>
                 </div>
-
                 <hr>
+                {% endif %}
 
                 <!-- Mode -->
                 <div class="field gamemode">
