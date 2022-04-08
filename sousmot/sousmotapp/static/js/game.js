@@ -44,7 +44,6 @@ function addLetterToWord(letter) {
             } else {
                 userTryToWriteFirstLetter = true
             }
-
         }
     } else if (letter === "BACKSPACE") {
         // When user send backspace character we need to replace the last added character by '.'
