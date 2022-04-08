@@ -1,10 +1,12 @@
 // Variables declaration
 let grid = {
-    x: 0,
-    y: 1
+    x: 1,
+    y: 0
 }
 let word = wordFirstLetter.concat('.'.repeat(wordLength - 1)); // Shared word variable filled with dots and initial letter
 const countDownDate = new Date(end_time * 1000).getTime(); // Date to the end of countdown
+let userTryToWriteFirstLetter = false //Variable used to remember if the user is trying to write the first letter at the first position
+
 writeWord(); // Write word in grid for first time
 
 /**
@@ -28,28 +30,41 @@ function addLetterToWord(letter) {
     // Test if the received letter is accepted
     if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").includes(letter)) {
         // When the letter is a regular alphabet letter, set it at the right position in word
-        if (grid.y < wordLength) {
-            word = word.replaceAt(grid.y, letter);
-            // Once the letter is added we need to increment the user position in grid (grid column)
-            grid.y++;
-            writeWord();
+        if (grid.x === 1) {
+            word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
+            writeWord()
+        }
+
+        if (grid.x < wordLength) {
+            if (letter !== wordFirstLetter || grid.x !== 1 || userTryToWriteFirstLetter === true) {
+                word = word.replaceAt(grid.x, letter);
+                // Once the letter is added we need to increment the user position in grid (grid column)
+                grid.x++;
+                writeWord();
+            } else {
+                userTryToWriteFirstLetter = true
+            }
+
         }
     } else if (letter === "BACKSPACE") {
         // When user send backspace character we need to replace the last added character by '.'
         // Pay attention : First letter is never erased !
-        if (grid.y > 1) {
-            word = word.replaceAt(grid.y - 1, '.')
+        if (grid.x > 1) {
+            word = word.replaceAt(grid.x - 1, '.')
             // Once the letter is added we need to decrement the user position in grid (grid column)
-            grid.y--;
+            grid.x--;
             writeWord();
+        } else {
+            userTryToWriteFirstLetter = false
         }
     } else if (letter === "ENTER") {
         // When user send enter character we need to verify the word
         // The letter is verified only when the word is full
         if (word.match(/\./g) == null) {
             // Increment the number of user try (grid rows) and reset user position in grid (grid column)
-            grid.x++;
-            grid.y = 1;
+            grid.y++;
+            grid.x = 1;
+            userTryToWriteFirstLetter = false
 
             verifyWord();
             writeWord();
@@ -78,7 +93,7 @@ function verifyWord() {
     // Get user previous row
     let myTable = document.getElementById('table');
     let rows = myTable.rows;
-    let resultRow = rows[grid.x - 1];
+    let resultRow = rows[grid.y - 1];
 
     // For each letter in the response build word and colorize letters
     for (let i = 0; i < response.length; i++) {
@@ -108,7 +123,7 @@ function writeWord() {
     // Get user current row
     let myTable = document.getElementById('table');
     let rows = myTable.rows;
-    let inputRow = rows[grid.x];
+    let inputRow = rows[grid.y];
 
     // Write inside the grid letter by letter
     for (let i = 0; i < wordLength; i++) {
