@@ -43,8 +43,7 @@ $navbar-item-active-color: $navbar-item-hover-color;
     text-align: left;
     max-width: 30vw;
 
-    margin: 0 auto;
-    margin-top: 3rem;
+    margin: 3rem auto 0;
     color: $input-color;
 
     &:not(.dark-box) {
@@ -180,6 +179,8 @@ section {
 
     .box {
         background-color : $navbar-background-color;
+        color: $text;
+        text-align: center;
     }
 
     .content {
