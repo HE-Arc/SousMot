@@ -6,6 +6,7 @@ let gamemodeList = [];
 const gameModeInput = document.getElementById("gamemode-input");
 const gameDurationField = document.querySelector(".game-duration-field");
 const nbOfRoundField = document.querySelector(".number-word-field");
+const gameDurationInput = document.getElementById("game_duration");
 
 document.querySelectorAll(".field.gamemode .button").forEach( el => {
 
@@ -28,6 +29,12 @@ document.querySelectorAll(".field.gamemode .button").forEach( el => {
 
     });
     gamemodeList.push(el);
-})
+});
+
+  gameDurationInput.addEventListener("change", function (e) {
+    gameDurationInput.checkValidity();
+  });
+
+
 
 // Slider management
