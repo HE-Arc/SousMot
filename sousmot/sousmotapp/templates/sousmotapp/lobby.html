@@ -6,7 +6,7 @@
 {% block content %}
     <section class="hero has-text-centered">
         <div class="hero-body">
-            <h1 class="title">Game Lobby - {{ slug }}</h1>
+            <h1 class="title"><input type="text" class="input" value="{{ request.build_absolute_uri }}" style="max-width:{{ request.build_absolute_uri|length }}ch;" readonly></h1>
             <p class="subtitle">Copy the url and give it to your friend !</p>
 
             <div class="columns">

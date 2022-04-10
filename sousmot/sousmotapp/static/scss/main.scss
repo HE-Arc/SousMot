@@ -95,3 +95,14 @@ section {
 .media {
     align-items: center;
 }
+
+h1.title > input {
+    background-color:lighten($body-background-color, 10%);
+    color:$text;
+    text-align: center;
+    font-size:1.5rem;
+
+    &:focus {
+        border-color:white;
+    }
+}
