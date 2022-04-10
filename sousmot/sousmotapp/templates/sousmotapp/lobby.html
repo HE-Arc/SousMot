@@ -10,9 +10,11 @@
             <p class="subtitle">Copy the url and give it to your friend !</p>
 
             <div class="columns">
+                {% if is_host %}
                 <div class="column">
 
                     <!-- Game parameters -->
+
                     <form class="box" method="POST" action="#TODO-url">
                         {% csrf_token %}
 
@@ -89,6 +91,7 @@
                     </form>
                 </div>
                 <!-- End Game parameters -->
+                {% endif %}
 
                 <!-- List of connected user -->
                 <div class="column">
@@ -103,7 +106,7 @@
                                     <p>
                                         <strong>{{ username }}</strong>
                                         {% if is_guest %}<span class="tag is-link">Guest</span>{% endif %}
-                                        <span class="tag is-warning">Host</span>
+                                        {% if is_host %}<span class="tag is-warning">Host</span>{% endif %}
                                     </p>
                                 </div>
                             </div>
