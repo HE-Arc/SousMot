@@ -96,6 +96,10 @@ section {
     align-items: center;
 }
 
+.field.field-is-invisible {
+    display:none;
+}
+
 h1.title > input {
     background-color:lighten($body-background-color, 10%);
     color:$text;
