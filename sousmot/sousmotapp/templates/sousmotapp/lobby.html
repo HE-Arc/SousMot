@@ -7,23 +7,110 @@
     <section class="hero has-text-centered">
         <div class="hero-body">
             <h1 class="title">Game Lobby - {{ slug }}</h1>
-            <div class="box">
-                {% for foo in "adwdadw" %}
-                <article class="media">
-                      <figure class="media-left">
-                        <p class="image is-48x48">
-                          <img src="{% static "img/128x128.png" %}">
-                        </p>
-                      </figure>
-                      <div class="media-content">
-                        <div class="content">
-                          <p><strong>John Smith</strong> <span class="tag is-link">Guest</span></p>
+            <p class="subtitle">Copy the url and give it to your friend !</p>
+
+            <div class="columns">
+                <div class="column">
+
+                    <!-- Game parameters -->
+                    <form class="box" method="POST" action="#TODO-url">
+                        {% csrf_token %}
+
+                        <!-- Mode -->
+                        <div class="field gamemode">
+                            <label for="gamemode" class="label">Mode</label>
+                            <div class="control">
+                                <div class="buttons has-addons has-addons-fullwidth">
+                                    <div class="button is-fullwidth is-large  is-crimson is-selected" data-gamemode="time-attack">
+                                <span class="icon">
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                                        <span>Time attack</span>
+                                    </div>
+                                    <div class="button is-large is-fullwidth" data-gamemode="rounds">
+                                <span class="icon">
+                                    <i class="fa fa-users"></i>
+                                </span>
+                                        <span>Rounds</span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="gamemode-input">
+                            </div>
+
+                            <!-- Time -->
+                            <div class="game-duration-field field">
+                                <label for="game_duration" class="label">Game Duration</label>
+                                <div class="control">
+                                    <input class="input" name="game_duration" id="game_duration" type="text" required pattern="[0-9]{2}:[0-9]{2}" value="10:00" placeholder="mm:ss" title="Write a duration in the format mm:ss">
+                                </div>
+                            </div>
+
+                            <div class="number-word-field field">
+                                <label for="game_number_of_rounds" class="label">Number of rounds (Word)</label>
+                                <div class="control">
+                                    <input type="number" name="game_number_of_rounds" id="game_number_of_rounds" class="input" min="1" max="50" value="5">
+                                </div>
+                            </div>
+
                         </div>
-                      </div>
-                </article>
-                {% endfor %}
+
+                        <hr>
+                        <!-- Word Length -->
+                        <div class="field">
+                            <label for="word-length" class="label">Word Length</label>
+                            <div class="control">
+                                <input id="word-length" class="has-output slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7"
+                                       type="range" oninput="document.getElementById('word-length-value').textContent = value">
+                                <output for="sliderWithValue" id="word-length-value" class="has-background-dark">x</output>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <!-- Dictionary dropdown -->
+                        <div class="field">
+                            <label for="dictionary-choice" class="label">Dictionary</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="dictionary-choice">
+                                        <!-- TODO: Retrieve available Dictionary ! (Don't forget the ones created by the user) -->
+                                        <option>English</option>
+                                        <option>French</option>
+                                        <option>Spanish</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="field">
+                            <input type="submit" class="button is-crimson is-fullwidth" value="Start the Game">
+                        </div>
+
+                    </form>
+                </div>
+                <!-- End Game parameters -->
+
+                <!-- List of connected user -->
+                <div class="column">
+                    <div class="box">
+                        {% for foo in "adwdadw" %}
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-48x48">
+                                    <img src="{% static "img/128x128.png" %}">
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p><strong>John Smith</strong> <span class="tag is-link">Guest</span></p>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- End connected users -->
             </div>
-            <div class="button is-large is-crimson">Start the Game</div>
         </div>
     </section>
     <script src="{% static "js/app.js" %}"></script>
