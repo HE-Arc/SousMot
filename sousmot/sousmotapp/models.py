@@ -38,17 +38,19 @@ class Mode(models.Model):
     def __str__(self):
         return self.name
 
+
 class Game(models.Model):
-    
-    dictionary = models.ForeignKey('Dictionary', on_delete=models.CASCADE)
-    mode = models.ForeignKey('Mode', on_delete=models.CASCADE)
-    
-    nb_letters = models.PositiveSmallIntegerField()
-    time_s = models.PositiveIntegerField()
-    nb_words = models.PositiveSmallIntegerField()
-    
+    dictionary = models.ForeignKey('Dictionary', on_delete=models.CASCADE, null=True)
+    mode = models.ForeignKey('Mode', on_delete=models.CASCADE, null=True)
+
+    nb_letters = models.PositiveSmallIntegerField(null=True)
+    time_s = models.PositiveIntegerField(null=True)
+    nb_words = models.PositiveSmallIntegerField(null=True)
+    in_game = models.BooleanField(default=False)
+    uuid = models.TextField()
+
     def __str__(self):
-        return "Nombre de lettres : " + str(self.nb_letters)
+        return "Game ID : " + str(self.uuid)
 
 class GamesPerUser(models.Model):
     
