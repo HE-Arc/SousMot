@@ -114,3 +114,9 @@ h1.title > input {
         border-color:white;
     }
 }
+
+p.loading-label {
+    span, i {
+        vertical-align: middle;
+    }
+}
