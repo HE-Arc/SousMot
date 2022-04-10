@@ -8,7 +8,6 @@ from django.views.generic.base import TemplateView
 from django.http import JsonResponse
 from .models import Game, Mode, Dictionary
 
-# Create your views here.
 
 def index(request):
     context = { 
@@ -28,7 +27,7 @@ class SignUpView(generic.CreateView):
         return super().dispatch(*args, **kwargs)
 
 
-
 class GameLobbyView(TemplateView):
     template_name = "sousmotapp/lobby.html"
+    # TODO: Check if slug is in DB
 
