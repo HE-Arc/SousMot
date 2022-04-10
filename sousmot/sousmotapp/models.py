@@ -47,7 +47,7 @@ class Game(models.Model):
     time_s = models.PositiveIntegerField(null=True)
     nb_words = models.PositiveSmallIntegerField(null=True)
     in_game = models.BooleanField(default=False)
-    uuid = models.TextField()
+    uuid = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
         return "Game ID : " + str(self.uuid)
