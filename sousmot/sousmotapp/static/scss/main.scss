@@ -69,8 +69,10 @@ $navbar-item-active-color: $navbar-item-hover-color;
     }
 }
 
-.box strong {
-    color:hsl(0, 0%, 21%)
+.box {
+    strong, h1,h2,h3,h4,h5,h6 {
+        color:hsl(0, 0%, 21%)
+    }
 }
 
 footer.footer {

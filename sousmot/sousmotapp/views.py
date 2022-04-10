@@ -29,5 +29,19 @@ class SignUpView(generic.CreateView):
 
 class GameLobbyView(TemplateView):
     template_name = "sousmotapp/lobby.html"
-    # TODO: Check if slug is in DB
+
+    def get_context_data(self, **kwargs):
+        context = {"username": "", "is_guest": False}
+
+        if self.request.user.is_anonymous:
+            context["username"] = "Guest User"  # TODO: Replace with self.request.session["username"]
+            context["is_guest"] = True
+        else:
+            context["username"] = self.request.user.username
+
+        return context
+
+
+
+        # TODO: Check if slug is in DB
 

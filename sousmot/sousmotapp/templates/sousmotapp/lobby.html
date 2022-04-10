@@ -93,7 +93,22 @@
                 <!-- List of connected user -->
                 <div class="column">
                     <div class="box">
-                        {% for foo in "adwdadw" %}
+                         <h2 class="title has-text-centered">Contestants</h2>
+                        <article class="media">
+                           <figure class="media-left">
+                                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ username }}</strong>
+                                        {% if is_guest %}<span class="tag is-link">Guest</span>{% endif %}
+                                        <span class="tag is-warning">Host</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                        {% for foo in "123456" %}
                         <article class="media">
                             <figure class="media-left">
                                 <i class="fa fa-user fa-2x" aria-hidden="true"></i>
