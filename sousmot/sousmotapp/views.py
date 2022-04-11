@@ -141,8 +141,14 @@ class GameLobbyView(TemplateView):
         else:
             context["username"] = self.request.user.username
 
-        # TODO: Uncomment
-        # if kwargs["slug"] in self.request.session["creator"]:
-        #     context["is_host"] = True
+        # Simple check to see if the current user is the creator of the game
+        if kwargs["slug"] in self.request.session["creator"]:
+            context["is_host"] = True
+
+        # Keep a list of game the use has joined in case they disconnect in the middle of a party
+        if "joined_game" not in self.request.session:
+            self.request.session["joined_game"] = ()
+
+        self.request.session["joined_game"].push(kwargs["slug"])
 
         return context
