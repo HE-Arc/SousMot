@@ -1,0 +1,66 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Game{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">SousMot</h1>
+            <p class="subtitle">A Multiplayer Customizable Wordle game !</p>
+            <p class="subtitle">{{ mode }}</p>
+            <p id="timer" class="subtitle">99:99</p>
+            <div class="columns is-centered">
+                <div class="column is-narrow">
+                    <table class="table is-bordered" id="table">
+                        {% for i in rows %}
+                            <tr>
+                                {% for j in word_length %}
+                                    <td>
+                                        <div>
+
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="columns is-centered is-multiline" id="keyboard">
+                <div class="column is-full">
+                    <div>
+                        {% for i in "QWERTZUIOP" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="column is-full">
+                    <div>
+                        {% for i in "ASDFGHJKL" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="column is-full">
+                    <div>
+                        {% for i in "YXCVBNM" %}
+                            <button onclick="addLetterToWord('{{ i }}')" id="kb{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                        <button onclick="addLetterToWord('BACKSPACE')">&#9003;</button>
+                        <button onclick="addLetterToWord('ENTER')" style="width: 6rem">&#8629;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        // Pass django values to javascript
+        const wordLength = {{ word_length_js }};
+        const wordFirstLetter = '{{ word_first_letter }}';
+
+        const end_time = {{ end_time }};
+    </script>
+    <script src="{% static "js/game.js" %}"></script>
+{% endblock %}
