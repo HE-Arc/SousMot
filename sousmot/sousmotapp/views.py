@@ -123,8 +123,13 @@ class GameLobbyView(TemplateView):
     def get_context_data(self, **kwargs):
         context = {"username": "", "is_guest": False, "is_host": False}
 
+        # Give the user a temporary username for the session
+        if "name" not in self.request.session:
+            self.request.session["name"] = "Guest-" + "".join(random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5))
+
         if self.request.user.is_anonymous:
-            context["username"] = self.request.session["name"]  # TODO: Get name from user
+            context["username"] = self.request.session["name"]
+
             context["is_guest"] = True
         else:
             context["username"] = self.request.user.username
