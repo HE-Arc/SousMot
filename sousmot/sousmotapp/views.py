@@ -140,8 +140,8 @@ class GameLobbyView(TemplateView):
 
         # Keep a list of game the use has joined in case they disconnect in the middle of a party
         if "joined_game" not in self.request.session:
-            self.request.session["joined_game"] = ()
+            self.request.session["joined_game"] = []
 
-        self.request.session["joined_game"].push(kwargs["slug"])
+        self.request.session["joined_game"].append(kwargs["slug"])
 
         return context
