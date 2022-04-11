@@ -99,14 +99,14 @@ section {
 
 .table {
     display: inline;
-    
+
     td {
         padding: 0.5rem;
         color: $text;
         font-size: 2rem;
         font-weight: bold;
         background-color: $navbar-background-color;
-        
+
         div {
             width: 50px;
             height: 50px;
@@ -144,6 +144,7 @@ section {
 
     @include mobile {
         width: 2rem;
+        padding: 0;
     }
 
     &:hover {
@@ -161,8 +162,12 @@ section {
 }
 
 #keyboard div {
-    padding: 0.1rem;
+    padding-bottom: 0.1rem;
 
+    @include mobile {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 // Rules pages
@@ -178,13 +183,13 @@ section {
 .hero-rules {
 
     .box {
-        background-color : $navbar-background-color;
+        background-color: $navbar-background-color;
         color: $text;
         text-align: center;
     }
 
     .content {
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
 
         ul {
