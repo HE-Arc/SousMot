@@ -57,10 +57,10 @@
     </section>
     <script>
         // Pass django values to javascript
-        let wordLength = {{ word_length_js }};
-        let wordFirstLetter = '{{ word_first_letter }}';
+        const wordLength = {{ word_length_js }};
+        const wordFirstLetter = '{{ word_first_letter }}';
 
-        let end_time = {{ end_time }};
+        const end_time = {{ end_time }};
     </script>
     <script src="{% static "js/game.js" %}"></script>
 {% endblock %}

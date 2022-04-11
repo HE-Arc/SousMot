@@ -99,25 +99,25 @@ section {
 
 .table {
     display: inline;
-}
+    
+    td {
+        padding: 0.5rem;
+        color: $text;
+        font-size: 2rem;
+        font-weight: bold;
+        background-color: $navbar-background-color;
+        
+        div {
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
 
-.table td {
-    padding: 0.5rem;
-    color: $text;
-    font-size: 2rem;
-    font-weight: bold;
-    background-color: $navbar-background-color;
-}
-
-.table td div {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-
-    @include mobile {
-        width: 35px;
-        height: 35px;
-        font-size: 1.5rem;
+            @include mobile {
+                width: 35px;
+                height: 35px;
+                font-size: 1.5rem;
+            }
+        }
     }
 }
 
@@ -145,11 +145,11 @@ section {
     @include mobile {
         width: 2rem;
     }
-}
 
-#keyboard button:hover {
-    background-color: $navbar-item-hover-background-color;
-    cursor: pointer;
+    &:hover {
+        background-color: $navbar-item-hover-background-color;
+        cursor: pointer;
+    }
 }
 
 #keyboard .good_place:hover {
