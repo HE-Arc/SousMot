@@ -1,0 +1,242 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered hero-rules">
+        <div class="hero-body">
+            <h1 class="title">Rules</h1>
+            <p class="subtitle">Because it's always better to know what you're doing !</p>
+
+            <div class="box dark-box">
+
+                <div class="content">
+                    <p>
+                        SousMot is a multiplayer game based on Wordle, a game where you have to guess a word by successive
+                        attempts, as well as the French TV game Motus, the french adaption of <a href="https://en.wikipedia.org/wiki/Lingo_(American_game_show)">Lingo</a>.
+                    </p>
+
+                    <h2>How to play</h2>
+
+                    <p>
+                        In the game view, try to find a word that is in the dictionary and fits in one row of the table.
+                        You can use the keyboard at the bottom of the page or just write it !
+
+                        Then click enter and the letters that you have entered will color depending their position.
+                    </p>
+                </div>
+
+                <div class="columns is-centered">
+                    <div class="column is-narrow">
+                        <table class="table is-bordered" id="table">
+
+                            <tbody>
+                            <tr>
+
+                                <td class="good_place">
+                                    <div>P</div>
+                                </td>
+
+                                <td>
+                                    <div>O</div>
+                                </td>
+
+                                <td class="bad_place">
+                                    <div>R</div>
+                                </td>
+
+                                <td class="good_place">
+                                    <div>T</div>
+                                </td>
+
+                                <td class="good_place">
+                                    <div>E</div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    <div>P</div>
+                                </td>
+
+                                <td>
+                                    <div>.</div>
+                                </td>
+
+                                <td>
+                                    <div>.</div>
+                                </td>
+
+                                <td>
+                                    <div>T</div>
+                                </td>
+
+                                <td>
+                                    <div>E</div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <ul>
+                        <li><strong class="good-place-color">Red</strong> : The letter is at the right place</li>
+                        <li><strong class="wrong-place-color">Yellow</strong> : The letter is in the word to guess but is at the wrong place</li>
+                        <li><strong>None</strong> : The letter is not in the word to guess</li>
+                    </ul>
+
+                    <h2>Time Attack</h2>
+                    <p>
+                        Each player has a set time to find as many words as possible. The player who finds the most words wins.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}
