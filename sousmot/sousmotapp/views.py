@@ -135,7 +135,7 @@ class GameLobbyView(TemplateView):
             context["username"] = self.request.user.username
 
         # Simple check to see if the current user is the creator of the game
-        if kwargs["slug"] in self.request.session["creator"]:
+        if "creator" in self.request.session and kwargs["slug"] in self.request.session["creator"]:
             context["is_host"] = True
 
         # Keep a list of game the use has joined in case they disconnect in the middle of a party
