@@ -35,6 +35,19 @@ server ENV["SOUSMOT_HOST"], user: ENV["SOUSMOT_USER"],
 set :deploy_to, "/var/www/#{fetch(:application)}"
 
 
+
+
+after 'deploy:publishing', 'uwsgi:restart'
+
+namespace :uwsgi do
+    desc 'Restart uWSGI server'
+    task :restart do
+        on roles(:web) do |h|
+	    execute :sudo, 'sv reload uwsgi'
+        end
+    end
+end
+
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
