@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic, View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 
 from .models import Game, Dictionary, Mode
 
@@ -121,10 +121,16 @@ class CreateGameView(View):
         else:
             return self._generate_random_code(retry-1)
 
+
 class GameLobbyView(TemplateView):
     template_name = "sousmotapp/lobby.html"
 
-    # TODO: Check if slug is in DB
+    def dispatch(self, request, *args, **kwargs):
+        # Check if slug is in DB
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Game does not exist")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = {"username": "", "is_guest": False, "is_host": True}
