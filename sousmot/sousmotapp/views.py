@@ -121,10 +121,10 @@ class GameLobbyView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = {"username": "", "is_guest": False, "is_host": True}
+        context = {"username": "", "is_guest": False, "is_host": False}
 
         if self.request.user.is_anonymous:
-            context["username"] = "Guest User"  # TODO: Replace with self.request.session["name"]
+            context["username"] = self.request.session["name"]  # TODO: Get name from user
             context["is_guest"] = True
         else:
             context["username"] = self.request.user.username
