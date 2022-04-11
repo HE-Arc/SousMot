@@ -75,11 +75,6 @@ class CreateGameView(View):
             # Store username in the session
             request.session["name"] = form.data["guest_username"]
 
-            # if "joined_game" not in request.session:
-            #     request.session["joined_game"] = ()
-            #
-            # request.session["joined_game"].push()
-
         game_code = self._generate_random_code(retry=3)
 
         # Fuck it, give them a 500 error, they might retry...
@@ -98,13 +93,6 @@ class CreateGameView(View):
         game_obj.save()
 
         return redirect('game_lobby', slug=game_code)
-
-        # Create game in DB
-        #game_obj = Game.objects.create(
-        #    dictionary_id=Dictionary.objects.get(name=form.data["dictionary"]).pk,
-        #    mode_id=Mode.objects.get(name=form.data["mode"]).pk
-        #)
-        #game_obj.save()
 
     def _generate_random_code(self, retry=3):
         """
