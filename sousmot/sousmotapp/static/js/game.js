@@ -64,15 +64,28 @@ function addLetterToWord(letter) {
     writeWord();
 }
 
+function reqListener () {
+  console.log(this.responseText);
+}
+
+
 /**
  * Send the word to the server and wait a response to colorize the letters
  */
 function verifyWord() {
 
+    let xmlhttp = new XMLHttpRequest();
+    let url = window.location.href+"verify/?word="+word;
 
-    chatSocket.send(JSON.stringify({
-        'message': word
-    }))
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let myArr = JSON.parse(this.responseText);
+            console.log(myArr);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
 
     console.log("Verify word : " + word); // TODO replace by function to send word to server
 
