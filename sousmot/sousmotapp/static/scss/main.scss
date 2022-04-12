@@ -73,8 +73,8 @@ $navbar-item-active-color: $navbar-item-hover-color;
 }
 
 .box {
-    strong, h1,h2,h3,h4,h5,h6 {
-        color:hsl(0, 0%, 21%)
+    strong, h1, h2, h3, h4, h5, h6 {
+        color: hsl(0, 0%, 21%)
     }
 }
 
@@ -98,13 +98,13 @@ section {
     width: 50%;
 }
 
- // Game Lobby
+// Game Lobby
 .media {
     align-items: center;
 }
 
 .field.field-is-invisible {
-    display:none;
+    display: none;
 }
 
 input:invalid:not(:focus) {
@@ -112,13 +112,13 @@ input:invalid:not(:focus) {
 }
 
 h1.title > input {
-    background-color:lighten($body-background-color, 10%);
-    color:$text;
+    background-color: lighten($body-background-color, 10%);
+    color: $text;
     text-align: center;
-    font-size:1.5rem;
+    font-size: 1.5rem;
 
     &:focus {
-        border-color:white;
+        border-color: white;
     }
 }
 
@@ -131,6 +131,8 @@ p.loading-label {
 // Game
 #timer {
     height: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 .table {
