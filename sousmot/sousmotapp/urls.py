@@ -11,10 +11,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     path("admin/", admin.site.urls),
     path("signup/", SignUpView.as_view(), name="signup"),
-    path("login/",
-         auth_views.LoginView.as_view(template_name='registration/login.html', redirect_authenticated_user=True),
-         name="login"),
+    path("login/", auth_views.LoginView.as_view(template_name='registration/login.html', redirect_authenticated_user=True), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("game/new/", views.CreateGameView.as_view(), name="game_create"),
+    # path("accounts/", include("django.contrib.auth.urls")),
     path("game/id/<slug:slug>/", views.GameLobbyView.as_view(), name="game_lobby"),
     path('game/', GameView.as_view(), name='game'),
     path('rules/', views.rules, name='rules')
