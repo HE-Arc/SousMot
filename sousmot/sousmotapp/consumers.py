@@ -22,9 +22,12 @@ def message_for_send_list_user(self, listUser):
 
 class GameConsumer(WebsocketConsumer):
     
+    index = -1
+    
     def connect(self):
-        self.room_group_name = 'test' #ID Game
-        listUser = cache.get("test_users", list())
+        self.index = len(self.scope['session']['joined_game'])
+        self.room_group_name = self.scope['session']['joined_game'][self.index-1] #ID Game
+        listUser = cache.get(self.scope['session']['joined_game'][self.index-1]+"_users", list())
         
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -33,7 +36,7 @@ class GameConsumer(WebsocketConsumer):
         
         self.accept()
         listUser.append(self.scope['session']['name'])
-        cache.set("test_users", listUser, 7200) 
+        cache.set(self.scope['session']['joined_game'][self.index-1]+"_users", listUser, 7200) 
         message_for_send_list_user(self, listUser)
         
     
@@ -74,11 +77,11 @@ class GameConsumer(WebsocketConsumer):
         }))
     
     def disconnect(self, code):
-        listUser = cache.get("test_users")
+        listUser = cache.get(self.scope['session']['joined_game'][self.index-1]+"_users")
         
-        listUser.remove(self.scope["user"])
+        listUser.remove(self.scope['session']['name'])
         
-        cache.set("test_users", listUser, 7200)  
+        cache.set(self.scope['session']['joined_game'][self.index-1]+"_users", listUser, 7200)  
         message_for_send_list_user(self, listUser)
         
     

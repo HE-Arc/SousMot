@@ -155,15 +155,18 @@ class GameLobbyView(TemplateView):
         context = {"username": "", "is_guest": False, "is_host": False, "slug": kwargs["slug"]}
 
         # Give the user a temporary username for the session
-        if "name" not in self.request.session:
-            self.request.session["name"] = "Guest-" + "".join(
-                random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5))
+        if self.request.user.is_anonymous:
+            if "name" not in self.request.session:
+                self.request.session["name"] = "Guest-" + "".join(
+                    random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5))
+        else:
+            self.request.session["name"] = self.request.user.username
+
+        context["username"] = self.request.session["name"]
 
         if self.request.user.is_anonymous:
-            context["username"] = self.request.session["name"]
             context["is_guest"] = True
-        else:
-            context["username"] = self.request.user.username
+
 
         context["dictionaries"] = Dictionary.objects.all()
 
