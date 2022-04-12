@@ -33,6 +33,7 @@ ALLOWED_HOSTS = env.list('SOUSMOT_ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,14 @@ INSTALLED_APPS = [
     'compressor',
     'sousmotapp'
 ]
+
+ASGI_APPLICATION = 'sousmot.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

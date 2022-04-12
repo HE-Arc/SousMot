@@ -1,4 +1,18 @@
 // Variables declaration
+let url = `ws://${window.location.host}/ws/socket-server/`
+
+const chatSocket = new WebSocket(url)
+
+chatSocket.onmessage = function(e){
+    let data = JSON.parse(e.data)
+    console.log('Data', data)
+
+    if(data.type === 'repsonse' || data.type === 'user_check')
+    {
+        console.log(data.message)
+    }
+}
+
 let grid = {
     x: 1,
     y: 0
@@ -6,6 +20,8 @@ let grid = {
 let word = wordFirstLetter.concat('.'.repeat(wordLength - 1)); // Shared word variable filled with dots and initial letter
 const countDownDate = new Date(end_time * 1000).getTime(); // Date to the end of countdown
 let isUserTryToWriteFirstLetter = false;// Variable used to remember if the user is trying to write the first letter at the first position
+
+
 
 writeWord(); // Write word in grid for first time
 
@@ -63,6 +79,13 @@ function addLetterToWord(letter) {
  * Send the word to the server and wait a response to colorize the letters
  */
 function verifyWord() {
+
+    
+
+    chatSocket.send(JSON.stringify({
+        'message' : word
+    }))
+
     console.log("Verify word : " + word); // TODO replace by function to send word to server
 
     // TODO get response from server
