@@ -1,10 +1,11 @@
 import random
 import string
 import time
+from collections import Counter
 
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models.functions import Length
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
@@ -213,3 +214,69 @@ class GameResultView(TemplateView):
         }
 
         return context
+
+
+class VerificationView(View):
+    """
+    It's used to verify if the word given is the word to guess
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Check if the current game exist and if it has started
+        """
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Invalid Game")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        slug = kwargs["slug"]
+        word_to_verify = request.GET.get("word")
+        word_to_verify = str(word_to_verify).upper()
+
+        if not word_to_verify:
+            return JsonResponse({"error": "Not enough parameter"}, status=400)
+
+        word_to_guess = cache.get(slug + "_words")[0]  # TODO: Change 0 with the current word the user is
+        word_to_guess_stat = Counter(word_to_guess)
+
+        if len(word_to_guess) != len(word_to_verify):
+            return JsonResponse({"result": "Not the same size"}, status=200)
+
+        if word_to_guess[0] != word_to_verify[0]:
+            return JsonResponse({"result": "Must start with the same letter"}, status=200)
+
+        # Check in the database if the word given does exist
+        game = Game.objects.filter(uuid=slug, dictionary__word__word=word_to_guess.lower())
+        if game.count() == 0:
+            return JsonResponse({"result": "Not found in dictionnary"}, status=200)
+
+        result = []
+
+        # This part does the dirty job of checking one by one if the letter is at the right place and so on...
+
+        for i in range(len(word_to_verify)):
+            letter_guess = word_to_verify[i]
+            letter_right = word_to_guess_stat[i]
+
+            if letter_guess == letter_right:
+                word_to_guess_stat[letter_guess] -= 1
+
+        # Check
+        for i in range(len(word_to_verify)):
+            letter_guess = word_to_verify[i]
+            letter_right = word_to_guess[i]
+
+            res = {"letter": letter_guess, "type": "wrong"}
+
+            if letter_guess == letter_right:
+                res["type"] = "good_place"
+            elif letter_guess in word_to_verify:
+                if word_to_guess_stat[letter_guess] > 0:
+                    res["type"] = "bad_place"
+                    word_to_guess_stat[letter_guess] -= 1
+
+            result.append(res)
+
+        return JsonResponse({"result": result}, status=200)
