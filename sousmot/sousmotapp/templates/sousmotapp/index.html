@@ -23,53 +23,7 @@
                 </div>
                 <hr>
                 {% endif %}
-
-                <!-- Mode -->
-                <div class="field gamemode">
-                    <label for="gamemode" class="label">Mode</label>
-                    <div class="control">
-                        <div class="buttons has-addons has-addons-fullwidth">
-                            <div class="button is-fullwidth is-large  is-crimson is-selected" data-gamemode="time-attack">
-                                <span class="icon">
-                                    <i class="fa fa-clock-o"></i>
-                                </span>
-                                <span>Time attack</span>
-                            </div>
-                            <div class="button is-large is-fullwidth" data-gamemode="rounds">
-                                <span class="icon">
-                                    <i class="fa fa-users"></i>
-                                </span>
-                                <span>Rounds</span>
-                            </div>
-                        </div>
-                        <input type="hidden" name="mode" id="gamemode-input" value="Time attack">
-                    </div>
-                </div>
-
-                <!-- Word Length -->
-                <div class="field">
-                    <label for="word-length" class="label">Word Length</label>
-                    <div class="control">
-                        <input id="word-length" name="word_length" class="has-output slider is-crimson is-fullwidth" step="1" min="6" max="10" value="7" type="range" oninput="document.getElementById('word-length-value').textContent = value">
-                        <output for="sliderWithValue" id="word-length-value" class="has-background-dark">x</output>
-                    </div>
-                </div>
-
-                <!-- Dictionary dropdown -->
-                <div class="field">
-                    <label for="dictionary-choice" class="label">Dictionary</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select id="dictionary-choice" name="dictionary">
-                                <!-- TODO: Retrieve available Dictionary ! (Don't forget the ones created by the user) -->
-                                <option>English</option>
-                                <option>French</option>
-                                <option>Spanish</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" class="button validation-button is-crimson" value="Create Room">
+                <input type="submit" class="button validation-button is-crimson is-large" value="Create Room">
             </form>
         </div>
     </section>
