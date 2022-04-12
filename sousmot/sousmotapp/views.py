@@ -179,3 +179,22 @@ class GameLobbyView(TemplateView):
         self.request.session.modified = True
 
         return context
+
+class GameResultView(TemplateView):
+    template_name = "sousmotapp/result.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if slug is in DB
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Game does not exist")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        score_list = [("Alexia",12), ("Corentin",10), ("Massimo",5)]
+        context = {
+            "score_list": enumerate(score_list),
+            "slug": kwargs["slug"]
+        }
+
+        return context
