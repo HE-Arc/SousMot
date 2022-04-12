@@ -40,6 +40,7 @@ class GameView(generic.View):
             game.time_s = int(minutes) * 60 + int(seconds)
             game.nb_letters = form.data['word_length']
             game.dictionary_id = form.data['dictionary']
+            game.in_game = True
             game.save()
 
             # Generate words
