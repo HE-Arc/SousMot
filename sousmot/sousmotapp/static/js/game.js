@@ -1,5 +1,8 @@
 // Variables declaration
 
+// TODO move this to the right place to show the number of word already found by user
+document.getElementById("wordcounter").textContent = "0";
+
 let grid = {
     x: 1,
     y: 0
@@ -7,7 +10,6 @@ let grid = {
 let word = wordFirstLetter.concat('.'.repeat(wordLength - 1)); // Shared word variable filled with dots and initial letter
 const countDownDate = new Date(end_time * 1000).getTime(); // Date to the end of countdown
 let isUserTryToWriteFirstLetter = false;// Variable used to remember if the user is trying to write the first letter at the first position
-
 
 
 writeWord(); // Write word in grid for first time
@@ -67,10 +69,9 @@ function addLetterToWord(letter) {
  */
 function verifyWord() {
 
-    
 
     chatSocket.send(JSON.stringify({
-        'message' : word
+        'message': word
     }))
 
     console.log("Verify word : " + word); // TODO replace by function to send word to server

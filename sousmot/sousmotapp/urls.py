@@ -17,6 +17,7 @@ urlpatterns = [
     # path("accounts/", include("django.contrib.auth.urls")),
     path("lobby/<slug:slug>/", views.GameLobbyView.as_view(), name="game_lobby"),
     path('game/<slug:slug>/', GameView.as_view(), name='game'),
+    path('result/<slug:slug>/', views.GameResultView.as_view(), name='result'),
     path('rules/', views.rules, name='rules')
 ]
 

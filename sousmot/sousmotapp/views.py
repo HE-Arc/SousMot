@@ -36,13 +36,23 @@ class GameView(generic.View):
         if form.is_valid():
             game = Game.objects.get(uuid=kwargs["slug"])
             game.mode = Mode.objects.get(name=form.data['game_mode'])
-            print(form.data['game_duration'])
-            print(type(form.data['game_duration']))
             minutes, seconds = form.data['game_duration'].split(":")
-            game.time_s = int(minutes)*60 + int(seconds)
+            game.time_s = int(minutes) * 60 + int(seconds)
             game.nb_letters = form.data['word_length']
             game.dictionary_id = form.data['dictionary']
             game.save()
+
+            # Generate words
+            number_words = int(game.time_s / 5)
+            words = Word.objects.annotate(word_len=Length('word')).filter(dictionary=game.dictionary_id,
+                                                                          word_len__exact=game.nb_letters)
+            generated_words = random.sample(list(words), number_words)
+            upper_generated_words = list(map(lambda x: x.word.upper(), generated_words))
+
+            # Cache save
+            cache.set(kwargs["slug"] + '_words', upper_generated_words, 7200)
+            cache.set(kwargs["slug"] + '_time', time.time() + game.time_s, 7200)
+
             return redirect('game', slug=kwargs["slug"])
         else:
             print(form.errors)
@@ -52,30 +62,18 @@ class GameView(generic.View):
 
         game = Game.objects.get(uuid=kwargs["slug"])
         game_mode = game.mode.name
-        game_duration = game.time_s
         word_length = game.nb_letters
-        dictionary_pk = game.dictionary_id
 
         if game_mode == 'time-attack':
 
-            end_time = time.time() + game_duration
-            number_words = int(game_duration / 5)
-            words = Word.objects.annotate(word_len=Length('word')).filter(dictionary=dictionary_pk,
-                                                                          word_len__exact=word_length)
-            generated_words = random.sample(list(words), number_words)
-            upper_generated_words = list(map(lambda x: x.word.upper(), generated_words))
-
             context = {
-                'mode': "TIME ATTACK",
+                'mode': game_mode.upper(),
                 'rows': range(6),
-                'end_time': end_time,
+                'end_time': cache.get(kwargs["slug"] + '_time'),
                 'word_length': range(word_length),
                 'word_length_js': word_length,
-                'word_first_letter': upper_generated_words[0][0]
+                'word_first_letter': cache.get(kwargs["slug"] + '_words')[0][0]
             }
-
-            #cache.set('sdkajajs_words', generated_words, 7200)
-            #cache.set('sdkajajs_time', end_time, 7200)
 
             return render(request, 'sousmotapp/game.html', context)
         else:
@@ -179,5 +177,24 @@ class GameLobbyView(TemplateView):
 
         self.request.session["joined_game"].append(kwargs["slug"])
         self.request.session.modified = True
+
+        return context
+
+class GameResultView(TemplateView):
+    template_name = "sousmotapp/result.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if slug is in DB
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Game does not exist")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        score_list = [("Alexia",12), ("Corentin",10), ("Massimo",5)]
+        context = {
+            "score_list": enumerate(score_list),
+            "slug": kwargs["slug"]
+        }
 
         return context
