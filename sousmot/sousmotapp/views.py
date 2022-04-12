@@ -129,7 +129,6 @@ class GameLobbyView(TemplateView):
 
         if self.request.user.is_anonymous:
             context["username"] = self.request.session["name"]
-
             context["is_guest"] = True
         else:
             context["username"] = self.request.user.username
