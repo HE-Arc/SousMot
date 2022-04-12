@@ -94,7 +94,7 @@
 
                             <hr>
                             <div class="field">
-                                <input type="submit" class="button is-crimson is-fullwidth" value="Start the Game">
+                                <input type="submit" class="button is-crimson is-fullwidth" value="Start the Game" onclick="redirectEveryone()">
                             </div>
 
                         </form>
@@ -138,5 +138,9 @@
         </div>
     </section>
     <script src="{% static "js/app.js" %}"></script>
+    <script>
+        // Pass django values to javascript
+        const urlredirect = "{% url 'game' slug=slug %}";
+    </script>
     <script src="{% static "js/lobby.js" %}"></script>
 {% endblock %}

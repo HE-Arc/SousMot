@@ -41,6 +41,7 @@ class GameView(generic.View):
             game.time_s = int(minutes) * 60 + int(seconds)
             game.nb_letters = form.data['word_length']
             game.dictionary_id = form.data['dictionary']
+            game.in_game = True
             game.save()
 
             # Generate words
@@ -53,6 +54,17 @@ class GameView(generic.View):
             # Cache save
             cache.set(kwargs["slug"] + '_words', upper_generated_words, 7200)
             cache.set(kwargs["slug"] + '_time', time.time() + game.time_s, 7200)
+
+            list_users = cache.get(kwargs["slug"] + "_users")
+            list_users_score = list()
+            list_users_score.append((request.session["name"],
+                                     random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase,
+                                                    k=5), 0))
+            for user in list_users:
+                list_users_score.append(
+                    (user[:-1], random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5), 0))
+
+            cache.set(kwargs["slug"] + "_users_score", list_users_score, 7200)
 
             return redirect('game', slug=kwargs["slug"])
         else:
@@ -168,7 +180,6 @@ class GameLobbyView(TemplateView):
         if self.request.user.is_anonymous:
             context["is_guest"] = True
 
-
         context["dictionaries"] = Dictionary.objects.all()
 
         # Simple check to see if the current user is the creator of the game
@@ -184,6 +195,7 @@ class GameLobbyView(TemplateView):
 
         return context
 
+
 class GameResultView(TemplateView):
     template_name = "sousmotapp/result.html"
 
@@ -195,7 +207,7 @@ class GameResultView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        score_list = [("Alexia",12), ("Corentin",10), ("Massimo",5)]
+        score_list = cache.get(kwargs["slug"] + "_users_score")
         context = {
             "score_list": enumerate(score_list),
             "slug": kwargs["slug"]
