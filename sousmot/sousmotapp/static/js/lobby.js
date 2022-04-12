@@ -1,6 +1,6 @@
 let url = `ws://${window.location.host}/ws/socket-server/`;
 
-const chatSocket = new WebSocket(url);
+const gameSocket = new WebSocket(url);
 
 
 
@@ -34,13 +34,16 @@ function createHtmlUser(username, is_guest)
         `;
 }
 
-chatSocket.onmessage = function(e){
+gameSocket.onmessage = function(e){
     let data = JSON.parse(e.data);
     // console.log('Data', data);
 
-    if(data.type === 'response' || data.type === 'user_check')
+    if(data.type === 'redirection')
     {
-        console.log(data.message);
+        // Simulate an HTTP redirect:
+        setTimeout(function(){
+            window.location.href = urlredirect;
+         }, 1500);
     }
 
     if(data.type === 'users')
@@ -67,4 +70,10 @@ chatSocket.onmessage = function(e){
             
         });
     }
+}
+
+function redirectEveryone(){
+    gameSocket.send(JSON.stringify({
+        "message": "startgame"
+    }))
 }
