@@ -60,7 +60,7 @@ class GameView(generic.View):
                                                     k=5), 0))
             for user in list_users:
                 list_users_score.append(
-                    (user, random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5), 0))
+                    (user[:-1], random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5), 0))
 
             cache.set(kwargs["slug"] + "_users_score", list_users_score, 7200)
 
