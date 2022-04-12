@@ -9,9 +9,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.views.generic.base import TemplateView
+from django.core.cache import cache
 
-from .forms import GuestUsernameForm
-from .models import Game, Dictionary
+from .forms import GuestUsernameForm, GameStartForm
+from .models import Game, Dictionary, Mode
 from .models import Word
 
 
@@ -30,16 +31,35 @@ def rules(request):
 class GameView(generic.View):
     template_name = 'sousmotapp/game.html'
 
-    def post(self, request):
-        game_mode = request.POST.get('gamemode')
-        game_duration = request.POST.get('game_duration')
-        word_length = int(request.POST.get('word_length'))
-        dictionary_pk = request.POST.get('dictionary')
+    def post(self, request, *args, **kwargs):
+        form = GameStartForm(request.POST)
+        if form.is_valid():
+            game = Game.objects.get(uuid=kwargs["slug"])
+            game.mode = Mode.objects.get(name=form.data['game_mode'])
+            print(form.data['game_duration'])
+            print(type(form.data['game_duration']))
+            minutes, seconds = form.data['game_duration'].split(":")
+            game.time_s = int(minutes)*60 + int(seconds)
+            game.nb_letters = form.data['word_length']
+            game.dictionary_id = form.data['dictionary']
+            game.save()
+            return redirect('game', slug=kwargs["slug"])
+        else:
+            print(form.errors)
+            return redirect('game_lobby', slug=kwargs["slug"])
+
+    def get(self, request, *args, **kwargs):
+
+        game = Game.objects.get(uuid=kwargs["slug"])
+        game_mode = game.mode.name
+        game_duration = game.time_s
+        word_length = game.nb_letters
+        dictionary_pk = game.dictionary_id
 
         if game_mode == 'time-attack':
-            seconds = int(game_duration.split(":")[0]) * 60 + int(game_duration.split(":")[1])
-            end_time = time.time() + seconds
-            number_words = int(seconds / 5)
+
+            end_time = time.time() + game_duration
+            number_words = int(game_duration / 5)
             words = Word.objects.annotate(word_len=Length('word')).filter(dictionary=dictionary_pk,
                                                                           word_len__exact=word_length)
             generated_words = random.sample(list(words), number_words)
@@ -53,6 +73,9 @@ class GameView(generic.View):
                 'word_length_js': word_length,
                 'word_first_letter': upper_generated_words[0][0]
             }
+
+            #cache.set('sdkajajs_words', generated_words, 7200)
+            #cache.set('sdkajajs_time', end_time, 7200)
 
             return render(request, 'sousmotapp/game.html', context)
         else:
@@ -131,7 +154,7 @@ class GameLobbyView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = {"username": "", "is_guest": False, "is_host": False}
+        context = {"username": "", "is_guest": False, "is_host": False, "slug": kwargs["slug"]}
 
         # Give the user a temporary username for the session
         if "name" not in self.request.session:

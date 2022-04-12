@@ -15,8 +15,8 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("game/new/", views.CreateGameView.as_view(), name="game_create"),
     # path("accounts/", include("django.contrib.auth.urls")),
-    path("game/id/<slug:slug>/", views.GameLobbyView.as_view(), name="game_lobby"),
-    path('game/', GameView.as_view(), name='game'),
+    path("lobby/<slug:slug>/", views.GameLobbyView.as_view(), name="game_lobby"),
+    path('game/<slug:slug>/', GameView.as_view(), name='game'),
     path('rules/', views.rules, name='rules')
 ]
 

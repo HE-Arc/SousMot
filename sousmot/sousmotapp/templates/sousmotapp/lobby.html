@@ -16,7 +16,7 @@
 
                         <!-- Game parameters -->
 
-                        <form class="box" method="POST" action="{% url 'game' %}">
+                        <form class="box" method="POST" action="{% url 'game' slug=slug %}">
                             {% csrf_token %}
 
                             <!-- Mode -->
@@ -38,7 +38,7 @@
                                             <span>Rounds</span>
                                         </div>
                                     </div>
-                                    <input name="gamemode" type="hidden" id="gamemode-input" value="time-attack">
+                                    <input name="game_mode" type="hidden" id="gamemode-input" value="time-attack">
                                 </div>
 
 
