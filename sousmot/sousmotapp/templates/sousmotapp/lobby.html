@@ -113,25 +113,18 @@
                             <div class="media-content">
                                 <div class="content">
                                     <p>
-                                        <strong>{{ username }}</strong>
+                                        <div id="user-here" value="{{ username }}"><strong> {{ username }}</strong></div>
                                         {% if is_guest %}<span class="tag is-link">Guest</span>{% endif %}
                                         {% if is_host %}<span class="tag is-warning">Host</span>{% endif %}
                                     </p>
                                 </div>
                             </div>
                         </article>
-                        {% for foo in "123456" %}
-                            <article class="media">
-                                <figure class="media-left">
-                                    <i class="fa fa-user fa-2x" aria-hidden="true"></i>
-                                </figure>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p><strong>John Smith</strong> <span class="tag is-link">Guest</span></p>
-                                    </div>
-                                </div>
-                            </article>
-                        {% endfor %}
+                        
+                        <div id="contestant-list">
+
+                        </div>
+
                         <hr>
                         <p class="has-text-centered loading-label">
                             <span class="is-vcentered">Loading...</span>
@@ -145,4 +138,5 @@
         </div>
     </section>
     <script src="{% static "js/app.js" %}"></script>
+    <script src="{% static "js/lobby.js" %}"></script>
 {% endblock %}
