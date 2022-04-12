@@ -88,6 +88,7 @@ class CreateGameView(View):
             request.session["creator"] = []
 
         request.session["creator"].append(game_code)
+        request.session.modified = True
 
         game_obj = Game.objects.create(uuid=game_code)
         game_obj.save()
@@ -142,5 +143,6 @@ class GameLobbyView(TemplateView):
             self.request.session["joined_game"] = []
 
         self.request.session["joined_game"].append(kwargs["slug"])
+        self.request.session.modified = True
 
         return context
