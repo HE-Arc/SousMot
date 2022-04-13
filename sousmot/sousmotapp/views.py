@@ -55,17 +55,6 @@ class GameView(generic.View):
             cache.set(kwargs["slug"] + '_words', upper_generated_words, 7200)
             cache.set(kwargs["slug"] + '_time', time.time() + game.time_s, 7200)
 
-            list_users = cache.get(kwargs["slug"] + "_users")
-            list_users_score = list()
-            list_users_score.append((request.session["name"],
-                                     random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase,
-                                                    k=5), 0))
-            for user in list_users:
-                list_users_score.append(
-                    (user[:-1], random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5), 0))
-
-            cache.set(kwargs["slug"] + "_users_score", list_users_score, 7200)
-
             return redirect('game', slug=kwargs["slug"])
         else:
             print(form.errors)
@@ -190,6 +179,9 @@ class GameLobbyView(TemplateView):
         if "joined_game" not in self.request.session:
             self.request.session["joined_game"] = []
 
+        self.request.session["player_id"] = random.choices(
+            string.ascii_lowercase + string.digits + string.ascii_uppercase,
+            k=5)
         self.request.session["joined_game"].append(kwargs["slug"])
         self.request.session.modified = True
 
@@ -207,7 +199,7 @@ class GameResultView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        score_list = cache.get(kwargs["slug"] + "_users_score")
+        score_list = cache.get(kwargs["slug"] + "_users_scores")
         context = {
             "score_list": enumerate(score_list),
             "slug": kwargs["slug"]
