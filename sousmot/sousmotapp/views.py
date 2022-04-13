@@ -240,8 +240,9 @@ class VerificationView(View):
             return JsonResponse({"result": "Must start with the same letter"}, status=200)
 
         # Check in the database if the word given does exist
-        game = Game.objects.filter(uuid=slug, dictionary__word__word=word_to_guess.lower())
-        if game.count() == 0:
+        game_dic = Game.objects.filter(uuid=slug).get().dictionary.pk
+
+        if Word.objects.filter(dictionary_id=game_dic, word=word_to_verify).count() == 0:
             return JsonResponse({"result": "Not found in dictionnary"}, status=200)
 
         result = []
