@@ -1,0 +1,47 @@
+{% extends "sousmotapp/base.html" %}
+
+{% load static %}
+{% block title %}Result - {{ slug }}{% endblock %}
+
+{% block content %}
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <h1 class="title">Congratulations !</h1>
+            <p class="subtitle">Result of the game</p>
+
+            <div class="columns">
+                <!-- List of connected user -->
+                <div class="column">
+                    <div class="box">
+                        <h2 class="title has-text-centered">Scores</h2>
+                        {% for index, element in score_list %}
+                            <article class="media">
+                                <figure class="media-left">
+                                    <div class="content">
+                                        <p><strong>{{ index|add:"1" }}</strong></p>
+                                    </div>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p><strong>{{ element.0 }}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <div class="content">
+                                        <p>{{ element.2 }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                        <hr>
+                        <a class="button validation-button is-crimson" href="{% url 'index' %}">
+                            Play Again
+                        </a>
+                    </div>
+                </div>
+                <!-- End connected users -->
+            </div>
+        </div>
+    </section>
+    <script src="{% static "js/app.js" %}"></script>
+{% endblock %}

@@ -1,55 +1,89 @@
-import datetime
-import time
-from .models import Game
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views import generic, View
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.base import TemplateView
-from django.http import JsonResponse, HttpResponse, Http404
-
-from .models import Game, Dictionary, Mode
-
 import random
 import string
+import time
+from collections import Counter
 
-from .forms import GuestUsernameForm
+from django.contrib.auth.forms import UserCreationForm
+from django.db.models.functions import Length
+from django.http import HttpResponse, Http404, JsonResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic, View
+from django.views.generic.base import TemplateView
+from django.core.cache import cache
+
+from .forms import GuestUsernameForm, GameStartForm
+from .models import Game, Dictionary, Mode
+from .models import Word
 
 
 def index(request):
-    context = { 
-        'is_guest' : request.user.is_authenticated,
+    context = {
+        'is_guest': request.user.is_authenticated,
     }
     return render(request, 'sousmotapp/index.html', context)
+
 
 def rules(request):
     context = {}
     return render(request, 'sousmotapp/rules.html', context)
-  
 
-class GameView(generic.TemplateView):
+
+class GameView(generic.View):
     template_name = 'sousmotapp/game.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def post(self, request, *args, **kwargs):
+        form = GameStartForm(request.POST)
+        if form.is_valid():
+            game = Game.objects.get(uuid=kwargs["slug"])
+            game.mode = Mode.objects.get(name=form.data['game_mode'])
+            minutes, seconds = form.data['game_duration'].split(":")
+            game.time_s = int(minutes) * 60 + int(seconds)
+            game.nb_letters = form.data['word_length']
+            game.dictionary_id = form.data['dictionary']
+            game.in_game = True
+            game.save()
 
-        context['mode'] = "TIME ATTACK"
-        context['rows'] = range(6)
+            # Generate words
+            number_words = int(game.time_s / 5)
+            words = Word.objects.annotate(word_len=Length('word')).filter(dictionary=game.dictionary_id,
+                                                                          word_len__exact=game.nb_letters)
+            generated_words = random.sample(list(words), number_words)
+            upper_generated_words = list(map(lambda x: x.word.upper(), generated_words))
 
-        end_time = time.time() + 610  # TODO replace by game duration
-        context['end_time'] = end_time
+            # Cache save
+            cache.set(kwargs["slug"] + '_words', upper_generated_words, 7200)
+            cache.set(kwargs["slug"] + '_time', time.time() + game.time_s, 7200)
 
-        word_length = 5  # TODO replace by word length
-        context['word_length'] = range(word_length)
-        context['word_length_js'] = word_length
+            return redirect('game', slug=kwargs["slug"])
+        else:
+            print(form.errors)
+            return redirect('game_lobby', slug=kwargs["slug"])
 
-        context['word_first_letter'] = "P"  # TODO replace by first letter of word
+    def get(self, request, *args, **kwargs):
 
-        return context
+        game = Game.objects.get(uuid=kwargs["slug"])
+        game_mode = game.mode.name
+        word_length = game.nb_letters
 
-      
+        if game_mode == 'time-attack':
+
+            context = {
+                'mode': game_mode.upper(),
+                'rows': range(6),
+                'end_time': cache.get(kwargs["slug"] + '_time'),
+                'word_length': range(word_length),
+                'word_length_js': word_length,
+                'word_first_letter': cache.get(kwargs["slug"] + '_words')[0][0],
+                'slug': kwargs["slug"]
+            }
+            print(cache.get(kwargs["slug"] + '_words')[0])
+
+            return render(request, 'sousmotapp/game.html', context)
+        else:
+            raise Http404("Not implemented baby !")
+
+
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
@@ -108,7 +142,7 @@ class CreateGameView(View):
         if retry <= 0:
             return None
         else:
-            return self._generate_random_code(retry-1)
+            return self._generate_random_code(retry - 1)
 
 
 class GameLobbyView(TemplateView):
@@ -122,17 +156,22 @@ class GameLobbyView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = {"username": "", "is_guest": False, "is_host": False}
+        context = {"username": "", "is_guest": False, "is_host": False, "slug": kwargs["slug"]}
 
         # Give the user a temporary username for the session
-        if "name" not in self.request.session:
-            self.request.session["name"] = "Guest-" + "".join(random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5))
+        if self.request.user.is_anonymous:
+            if "name" not in self.request.session:
+                self.request.session["name"] = "Guest-" + "".join(
+                    random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase, k=5))
+        else:
+            self.request.session["name"] = self.request.user.username
+
+        context["username"] = self.request.session["name"]
 
         if self.request.user.is_anonymous:
-            context["username"] = self.request.session["name"]
             context["is_guest"] = True
-        else:
-            context["username"] = self.request.user.username
+
+        context["dictionaries"] = Dictionary.objects.all()
 
         # Simple check to see if the current user is the creator of the game
         if "creator" in self.request.session and kwargs["slug"] in self.request.session["creator"]:
@@ -142,7 +181,132 @@ class GameLobbyView(TemplateView):
         if "joined_game" not in self.request.session:
             self.request.session["joined_game"] = []
 
+        self.request.session["player_id"] = random.choices(
+            string.ascii_lowercase + string.digits + string.ascii_uppercase,
+            k=5)
         self.request.session["joined_game"].append(kwargs["slug"])
         self.request.session.modified = True
 
         return context
+
+
+class GameResultView(TemplateView):
+    template_name = "sousmotapp/result.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if slug is in DB
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Game does not exist")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        score_list = cache.get(kwargs["slug"] + "_users_scores")
+        context = {
+            "score_list": enumerate(score_list),
+            "slug": kwargs["slug"]
+        }
+
+        return context
+
+
+class VerificationView(View):
+    """
+    It's used to verify if the word given is the word to guess
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Check if the current game exist and if it has started
+        """
+        if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
+            raise Http404("Invalid Game")
+
+        # Check for overtime
+        time_now = time.time()
+        if cache.get(kwargs["slug"] + '_time', time_now) <= time_now:
+            return JsonResponse({"error": "The game is finished !"}, status=403)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        slug = kwargs["slug"]
+        word_to_verify = request.GET.get("word")
+        word_to_verify = str(word_to_verify).upper()
+
+        if not word_to_verify:
+            return JsonResponse({"error": "Not enough parameter"}, status=400)
+
+        # We get the current player score
+        player_scores = cache.get(slug + "_users_scores")
+        player_index = [i for i, v in enumerate(player_scores) if v[1] == request.session["player_id"]][0]
+        print(type(player_index))
+        current_player_score = player_scores[player_index][2]
+
+        # We use the score as an index because in Time Attack, the score is the number of words known
+        word_to_guess = cache.get(slug + "_words")[current_player_score]
+        word_to_guess_stat = Counter(word_to_guess)
+
+        print(word_to_guess)
+
+        if len(word_to_guess) != len(word_to_verify):
+            return JsonResponse({"result": "Not the same size"}, status=200)
+
+        if word_to_guess[0] != word_to_verify[0]:
+            return JsonResponse({"result": "Must start with the same letter"}, status=200)
+
+        # Check in the database if the word given does exist
+        game_dic = Game.objects.filter(uuid=slug).get().dictionary.pk
+
+        if Word.objects.filter(dictionary_id=game_dic, word=word_to_verify.lower()).count() == 0:
+            return JsonResponse({"result": "Not found in dictionnary"}, status=200)
+
+        result = []
+
+        # This part does the dirty job of checking one by one if the letter is at the right place and so on...
+
+        for i in range(len(word_to_verify)):
+            letter_guess = word_to_verify[i]
+            letter_right = word_to_guess[i]
+
+            if letter_guess == letter_right:
+                word_to_guess_stat[letter_guess] -= 1
+
+        # Check
+        for i in range(len(word_to_verify)):
+            letter_guess = word_to_verify[i]
+            letter_right = word_to_guess[i]
+
+            res = {"letter": letter_guess, "type": "wrong"}
+
+            if letter_guess == letter_right:
+                res["type"] = "good_place"
+            elif letter_guess in word_to_verify:
+                if word_to_guess_stat[letter_guess] > 0:
+                    res["type"] = "bad_place"
+                    word_to_guess_stat[letter_guess] -= 1
+
+            result.append(res)
+
+        json_data = {"result": result}
+
+        if all(element["type"] == "good_place" for element in result):
+            json_data["next"] = self._get_next_word(request.session["player_id"], slug)
+
+        return JsonResponse(json_data, status=200)
+
+    def _get_next_word(self, player_id, game_slug):
+        """
+        Get the next word on the list and returns it
+        :return:a dictionary containing the first letter for the next word
+        """
+        player_scores = cache.get(game_slug + "_users_scores")
+        player_index = [i for i, v in enumerate(player_scores) if v[1] == player_id][0]
+
+        player_scores[player_index][2] += 1  # Increase score
+
+        next_word = cache.get(game_slug + "_words")[player_scores[player_index][2]]
+
+        cache.set(game_slug + "_users_scores", player_scores)
+
+        return {"first_letter": next_word[0]}

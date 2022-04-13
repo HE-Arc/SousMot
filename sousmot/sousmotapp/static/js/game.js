@@ -1,4 +1,5 @@
 // Variables declaration
+
 let grid = {
     x: 1,
     y: 0
@@ -6,6 +7,7 @@ let grid = {
 let word = wordFirstLetter.concat('.'.repeat(wordLength - 1)); // Shared word variable filled with dots and initial letter
 const countDownDate = new Date(end_time * 1000).getTime(); // Date to the end of countdown
 let isUserTryToWriteFirstLetter = false;// Variable used to remember if the user is trying to write the first letter at the first position
+
 
 writeWord(); // Write word in grid for first time
 
@@ -41,11 +43,14 @@ function addLetterToWord(letter) {
             word = word.replaceAt(grid.x, letter);
             grid.x++;
         }
+        writeWord();
 
     } else if (letter === "BACKSPACE" && grid.x > 1) {
         // When user send backspace character we need to replace the last added character by '.'
         word = word.replaceAt(grid.x - 1, '.');
         grid.x--;
+        writeWord();
+
 
     } else if (letter === "ENTER" && word.match(/\./g) == null) {
         // When user send enter character we need to verify the word
@@ -54,26 +59,46 @@ function addLetterToWord(letter) {
         grid.y++;
         grid.x = 1;
         verifyWord();
+        if (grid.y === 6) {
+            raz();
+        }
     }
 
-    writeWord();
 }
 
 /**
  * Send the word to the server and wait a response to colorize the letters
  */
 function verifyWord() {
-    console.log("Verify word : " + word); // TODO replace by function to send word to server
 
-    // TODO get response from server
-    let response = [
-        {"letter": "P", "type": "good_place"},
-        {"letter": "O", "type": "wrong"},
-        {"letter": "R", "type": "bad_place"},
-        {"letter": "T", "type": "good_place"},
-        {"letter": "E", "type": "good_place"}
-    ]
+    let xmlhttp = new XMLHttpRequest();
+    let url = window.location.href + "verify/?word=" + word;
 
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let response = JSON.parse(this.responseText);
+            if (response["result"] !== "Not found in dictionnary") {
+                displayResponse(response["result"]);
+                if (response["next"] != null) {
+                    nextWord(response["next"]["first_letter"])
+                }
+            } else {
+                grid.y--;
+                word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
+                writeWord()
+            }
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+}
+
+/**
+ * Colorize letters with the response
+ * @param response
+ */
+function displayResponse(response) {
     // Clean cached word
     word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
 
@@ -81,13 +106,18 @@ function verifyWord() {
     let resultRow = document.getElementById('table').rows[grid.y - 1];
 
     // For each letter in the response build word and colorize letters
+
     for (let i = 0; i < response.length; i++) {
         // Colorize cells and keyboard
         resultRow.cells[i].classList.add(response[i]["type"]);
+
         document.getElementById('kb' + response[i]["letter"]).classList.add(response[i]["type"]);
 
         // Check if the letter is right or not and bild word for next display
         word = response[i]["type"] === "good_place" ? word.replaceAt(i, response[i]["letter"]) : word;
+    }
+    if (word.includes(".")) {
+        writeWord();
     }
 }
 
@@ -102,6 +132,35 @@ function writeWord() {
     for (let i = 0; i < wordLength; i++) {
         inputRow.cells[i].children[0].innerText = word[i];
     }
+}
+
+/**
+ * Reset game and get a new word
+ * @param first_letter
+ */
+function nextWord(first_letter) {
+    setTimeout(function () {
+        wordFirstLetter = first_letter
+        document.getElementById("wordcounter").textContent++;
+        raz()
+
+    }, 2000);
+}
+
+/**
+ * Restart view
+ */
+function raz() {
+    word = wordFirstLetter.concat('.'.repeat(wordLength - 1))
+    grid.x = 1
+    grid.y = 0
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => document.getElementById('kb' + letter).className = "")
+    let cells = document.getElementsByTagName("td")
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].className = "";
+        cells[i].children[0].innerText = "";
+    }
+    writeWord()
 }
 
 /**
@@ -120,6 +179,10 @@ let x = setInterval(function () {
     // Display the result
     if (minutes >= 0 && seconds >= 0) {
         document.getElementById("timer").innerHTML = pad(minutes, 2) + ":" + pad(seconds, 2);
+    }
+
+    if (minutes === 0 && seconds === 0) {
+        window.location.href = urlredirect;
     }
 }, 1000);
 
