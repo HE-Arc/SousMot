@@ -160,7 +160,7 @@ p.loading-label {
 }
 
 .table .good_place, #keyboard .good_place {
-    background-color: $game-cell-right-color;
+    background-color: $game-cell-right-color !important;
 }
 
 .table .bad_place, #keyboard .bad_place {

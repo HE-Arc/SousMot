@@ -46,11 +46,14 @@ function addLetterToWord(letter) {
             word = word.replaceAt(grid.x, letter);
             grid.x++;
         }
+        writeWord();
 
     } else if (letter === "BACKSPACE" && grid.x > 1) {
         // When user send backspace character we need to replace the last added character by '.'
         word = word.replaceAt(grid.x - 1, '.');
         grid.x--;
+        writeWord();
+
 
     } else if (letter === "ENTER" && word.match(/\./g) == null) {
         // When user send enter character we need to verify the word
@@ -61,7 +64,6 @@ function addLetterToWord(letter) {
         verifyWord();
     }
 
-    writeWord();
 }
 
 function reqListener() {
@@ -80,7 +82,13 @@ function verifyWord() {
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             let response = JSON.parse(this.responseText);
-            displayResponse(response["result"]);
+            if (response["result"] !== "Not found in dictionnary") {
+                displayResponse(response["result"]);
+            } else {
+                grid.y--;
+                word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
+                writeWord()
+            }
         }
     };
     xmlhttp.open("GET", url, true);
@@ -100,6 +108,7 @@ function displayResponse(response) {
     for (let i = 0; i < response.length; i++) {
         // Colorize cells and keyboard
         resultRow.cells[i].classList.add(response[i]["type"]);
+
         document.getElementById('kb' + response[i]["letter"]).classList.add(response[i]["type"]);
 
         // Check if the letter is right or not and bild word for next display

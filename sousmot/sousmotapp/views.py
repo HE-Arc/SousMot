@@ -76,6 +76,7 @@ class GameView(generic.View):
                 'word_length_js': word_length,
                 'word_first_letter': cache.get(kwargs["slug"] + '_words')[0][0]
             }
+            print(cache.get(kwargs["slug"] + '_words')[0])
 
             return render(request, 'sousmotapp/game.html', context)
         else:
@@ -242,7 +243,7 @@ class VerificationView(View):
         # Check in the database if the word given does exist
         game_dic = Game.objects.filter(uuid=slug).get().dictionary.pk
 
-        if Word.objects.filter(dictionary_id=game_dic, word=word_to_verify).count() == 0:
+        if Word.objects.filter(dictionary_id=game_dic, word=word_to_verify.lower()).count() == 0:
             return JsonResponse({"result": "Not found in dictionnary"}, status=200)
 
         result = []
