@@ -274,8 +274,8 @@ class VerificationView(View):
 
         json_data = {"result": result}
 
-        if all(element == "good_place" for element in result):
-            json_data["next"] = self._get_next_word()
+        if all(element["type"] == "good_place" for element in result):
+            json_data["next"] = self._get_next_word(request.session["player_id"], slug)
 
         return JsonResponse(json_data, status=200)
 
