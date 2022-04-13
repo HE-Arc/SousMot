@@ -1,8 +1,5 @@
 // Variables declaration
 
-// TODO move this to the right place to show the number of word already found by user
-document.getElementById("wordcounter").textContent = "0";
-
 let grid = {
     x: 1,
     y: 0
@@ -84,6 +81,9 @@ function verifyWord() {
             let response = JSON.parse(this.responseText);
             if (response["result"] !== "Not found in dictionnary") {
                 displayResponse(response["result"]);
+                if (response["next"] != null) {
+
+                }
             } else {
                 grid.y--;
                 word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
@@ -113,6 +113,8 @@ function displayResponse(response) {
 
         // Check if the letter is right or not and bild word for next display
         word = response[i]["type"] === "good_place" ? word.replaceAt(i, response[i]["letter"]) : word;
+    }
+    if (word.includes(".")) {
         writeWord();
     }
 }
@@ -128,6 +130,21 @@ function writeWord() {
     for (let i = 0; i < wordLength; i++) {
         inputRow.cells[i].children[0].innerText = word[i];
     }
+}
+
+function nextWord() {
+    setTimeout(function () {
+        document.getElementById("wordcounter").textContent++;
+        word = wordFirstLetter.concat('.'.repeat(wordLength - 1))
+        grid.x = 1
+        grid.y = 0
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => document.getElementById('kb' + letter).className = "")
+        let cells = document.getElementsByTagName("td")
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].className="";
+        }
+
+    }, 2000);
 }
 
 /**
@@ -146,6 +163,7 @@ let x = setInterval(function () {
     // Display the result
     if (minutes >= 0 && seconds >= 0) {
         document.getElementById("timer").innerHTML = pad(minutes, 2) + ":" + pad(seconds, 2);
+
     }
 }, 1000);
 
