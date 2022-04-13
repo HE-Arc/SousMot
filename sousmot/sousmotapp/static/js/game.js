@@ -59,14 +59,12 @@ function addLetterToWord(letter) {
         grid.y++;
         grid.x = 1;
         verifyWord();
+        if (grid.y === 6) {
+            raz();
+        }
     }
 
 }
-
-function reqListener() {
-    console.log(this.responseText);
-}
-
 
 /**
  * Send the word to the server and wait a response to colorize the letters
@@ -82,7 +80,7 @@ function verifyWord() {
             if (response["result"] !== "Not found in dictionnary") {
                 displayResponse(response["result"]);
                 if (response["next"] != null) {
-
+                    nextWord(response["next"]["first_letter"])
                 }
             } else {
                 grid.y--;
@@ -96,6 +94,10 @@ function verifyWord() {
 
 }
 
+/**
+ * Colorize letters with the response
+ * @param response
+ */
 function displayResponse(response) {
     // Clean cached word
     word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
@@ -132,19 +134,33 @@ function writeWord() {
     }
 }
 
-function nextWord() {
+/**
+ * Reset game and get a new word
+ * @param first_letter
+ */
+function nextWord(first_letter) {
     setTimeout(function () {
+        wordFirstLetter = first_letter
         document.getElementById("wordcounter").textContent++;
-        word = wordFirstLetter.concat('.'.repeat(wordLength - 1))
-        grid.x = 1
-        grid.y = 0
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => document.getElementById('kb' + letter).className = "")
-        let cells = document.getElementsByTagName("td")
-        for (let i = 0; i < cells.length; i++) {
-            cells[i].className="";
-        }
+        raz()
 
     }, 2000);
+}
+
+/**
+ * Restart view
+ */
+function raz() {
+    word = wordFirstLetter.concat('.'.repeat(wordLength - 1))
+    grid.x = 1
+    grid.y = 0
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => document.getElementById('kb' + letter).className = "")
+    let cells = document.getElementsByTagName("td")
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].className = "";
+        cells[i].children[0].innerText = "";
+    }
+    writeWord()
 }
 
 /**
@@ -163,7 +179,10 @@ let x = setInterval(function () {
     // Display the result
     if (minutes >= 0 && seconds >= 0) {
         document.getElementById("timer").innerHTML = pad(minutes, 2) + ":" + pad(seconds, 2);
+    }
 
+    if (minutes === 0 && seconds === 0) {
+        window.location.href = urlredirect;
     }
 }, 1000);
 

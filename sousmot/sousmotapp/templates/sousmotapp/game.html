@@ -1,7 +1,7 @@
 {% extends "sousmotapp/base.html" %}
 
 {% load static %}
-{% block title %}Game{% endblock %}
+{% block title %}Game - {{ slug }}{% endblock %}
 
 {% block content %}
     <section class="hero has-text-centered">
@@ -59,12 +59,14 @@
     <script>
         // Pass django values to javascript
         const wordLength = {{ word_length_js }};
-        const wordFirstLetter = '{{ word_first_letter }}';
+        let wordFirstLetter = '{{ word_first_letter }}';
 
         const end_time = {{ end_time }};
+
+        const urlredirect = "{% url 'result' slug=slug %}";
     </script>
     <script src="{% static "js/game.js" %}"></script>
     <script>
-        
+
     </script>
 {% endblock %}

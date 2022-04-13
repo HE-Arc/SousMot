@@ -74,7 +74,8 @@ class GameView(generic.View):
                 'end_time': cache.get(kwargs["slug"] + '_time'),
                 'word_length': range(word_length),
                 'word_length_js': word_length,
-                'word_first_letter': cache.get(kwargs["slug"] + '_words')[0][0]
+                'word_first_letter': cache.get(kwargs["slug"] + '_words')[0][0],
+                'slug': kwargs["slug"]
             }
             print(cache.get(kwargs["slug"] + '_words')[0])
 
