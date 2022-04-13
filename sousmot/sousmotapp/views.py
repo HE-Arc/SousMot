@@ -252,7 +252,7 @@ class VerificationView(View):
 
         for i in range(len(word_to_verify)):
             letter_guess = word_to_verify[i]
-            letter_right = word_to_guess_stat[i]
+            letter_right = word_to_guess[i]
 
             if letter_guess == letter_right:
                 word_to_guess_stat[letter_guess] -= 1
@@ -273,4 +273,16 @@ class VerificationView(View):
 
             result.append(res)
 
-        return JsonResponse({"result": result}, status=200)
+        json_data = {"result": result}
+
+        if all(element == "good_place" for element in result):
+            json_data["next"] = self._get_next_word()
+
+        return JsonResponse(json_data, status=200)
+
+    def _get_next_word(self):
+        """
+        Get the next word on the list and returns it
+        :return:a dictionary containing the first letter for the next word
+        """
+        return {"first_letter": ""}
