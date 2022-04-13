@@ -222,6 +222,11 @@ class VerificationView(View):
         if Game.objects.filter(uuid=kwargs["slug"]).count() == 0:
             raise Http404("Invalid Game")
 
+        # Check for overtime
+        time_now = time.time()
+        if cache.get(kwargs["slug"] + '_time', time_now) <= time_now:
+            return JsonResponse({"error": "The game is finished !"}, status=403)
+
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
