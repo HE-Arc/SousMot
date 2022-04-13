@@ -280,4 +280,17 @@ class VerificationView(View):
 
             result.append(res)
 
-        return JsonResponse({"result": result}, status=200)
+        json_data = {"result": result}
+
+        if all(element == "good_place" for element in result):
+            json_data["next"] = self._get_next_word()
+
+        return JsonResponse(json_data, status=200)
+
+
+    def _get_next_word(self):
+        """
+        Get the next word on the list and returns it
+        :return:a dictionary containing the first letter for the next word
+        """
+        return {"first_letter": ""}
