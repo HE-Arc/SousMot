@@ -64,27 +64,31 @@ function addLetterToWord(letter) {
     writeWord();
 }
 
+function reqListener() {
+    console.log(this.responseText);
+}
+
+
 /**
  * Send the word to the server and wait a response to colorize the letters
  */
 function verifyWord() {
 
+    let xmlhttp = new XMLHttpRequest();
+    let url = window.location.href + "verify/?word=" + word;
 
-    chatSocket.send(JSON.stringify({
-        'message': word
-    }))
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let response = JSON.parse(this.responseText);
+            displayResponse(response["result"]);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 
-    console.log("Verify word : " + word); // TODO replace by function to send word to server
+}
 
-    // TODO get response from server
-    let response = [
-        {"letter": "P", "type": "good_place"},
-        {"letter": "O", "type": "wrong"},
-        {"letter": "R", "type": "bad_place"},
-        {"letter": "T", "type": "good_place"},
-        {"letter": "E", "type": "good_place"}
-    ]
-
+function displayResponse(response) {
     // Clean cached word
     word = wordFirstLetter.concat('.'.repeat(wordLength - 1));
 
@@ -92,6 +96,7 @@ function verifyWord() {
     let resultRow = document.getElementById('table').rows[grid.y - 1];
 
     // For each letter in the response build word and colorize letters
+
     for (let i = 0; i < response.length; i++) {
         // Colorize cells and keyboard
         resultRow.cells[i].classList.add(response[i]["type"]);
@@ -99,6 +104,7 @@ function verifyWord() {
 
         // Check if the letter is right or not and bild word for next display
         word = response[i]["type"] === "good_place" ? word.replaceAt(i, response[i]["letter"]) : word;
+        writeWord();
     }
 }
 
