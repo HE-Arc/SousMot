@@ -230,8 +230,17 @@ class VerificationView(View):
         if not word_to_verify:
             return JsonResponse({"error": "Not enough parameter"}, status=400)
 
-        word_to_guess = cache.get(slug + "_words")[0]  # TODO: Change 0 with the current word the user is
+        # We get the current player score
+        player_scores = cache.get(slug + "_users_scores")
+        player_index = [i for i, v in enumerate(player_scores) if v[1] == request.session["player_id"]][0]
+        print(type(player_index))
+        current_player_score = player_scores[player_index][2]
+
+        # We use the score as an index because in Time Attack, the score is the number of words known
+        word_to_guess = cache.get(slug + "_words")[current_player_score]
         word_to_guess_stat = Counter(word_to_guess)
+
+        print(word_to_guess)
 
         if len(word_to_guess) != len(word_to_verify):
             return JsonResponse({"result": "Not the same size"}, status=200)
@@ -279,9 +288,18 @@ class VerificationView(View):
 
         return JsonResponse(json_data, status=200)
 
-    def _get_next_word(self):
+    def _get_next_word(self, player_id, game_slug):
         """
         Get the next word on the list and returns it
         :return:a dictionary containing the first letter for the next word
         """
-        return {"first_letter": ""}
+        player_scores = cache.get(game_slug + "_users_scores")
+        player_index = [i for i, v in enumerate(player_scores) if v[1] == player_id][0]
+
+        player_scores[player_index][2] += 1  # Increase score
+
+        next_word = cache.get(game_slug + "_words")[player_scores[player_index][2]]
+
+        cache.set(game_slug + "_users_scores", player_scores)
+
+        return {"first_letter": next_word[0]}
