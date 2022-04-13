@@ -251,7 +251,7 @@ class VerificationView(View):
 
         for i in range(len(word_to_verify)):
             letter_guess = word_to_verify[i]
-            letter_right = word_to_guess_stat[i]
+            letter_right = word_to_guess[i]
 
             if letter_guess == letter_right:
                 word_to_guess_stat[letter_guess] -= 1
