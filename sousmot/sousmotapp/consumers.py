@@ -42,7 +42,7 @@ class GameConsumer(WebsocketConsumer):
         self.accept()
 
         list_user.append(self.scope['session']['name'] + str(self.is_guest))
-        list_users_score.append((self.scope['session']['name'], self.scope['session']['player_id'], 0))
+        list_users_score.append([self.scope['session']['name'], self.scope['session']['player_id'], 0])
 
         cache.set(self.scope['session']['joined_game'][self.index - 1] + "_users", list_user, 7200)
         cache.set(self.scope['session']['joined_game'][self.index - 1] + "_users_scores", list_users_score, 7200)
